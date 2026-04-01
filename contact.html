@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontak Omegasqua</title>
+  <meta name="description" content="Hubungi tim Omegasqua untuk konsultasi produk herbal, support affiliate, dan kebutuhan kampanye.">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="site.config.js"></script>
+  <script src="config.js?v=2026_1"></script>
+  <link rel="stylesheet" href="tailwind.css?v=2026_1">
+  <link rel="stylesheet" href="public-affiliate.css?v=2026_1">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script defer src="assets/vendor/lucide.min.js?v=0.577.0"></script>
+  <script defer src="public-affiliate.js?v=2026_1"></script>
+</head>
+<body data-page="contact">
+  <header class="omega-header">
+    <div class="omega-container omega-header-inner">
+      <a href="index.html" class="omega-brand"><img id="dyn-site-logo" class="omega-logo hidden" src="" alt=""><i id="logo-fallback" data-lucide="leaf"></i><strong class="dyn-site-name">Omegasqua</strong></a>
+      <nav class="omega-nav">
+        <a data-nav="home" href="index.html">Beranda</a><a data-nav="products" href="products.html">Produk</a><a data-nav="affiliate" href="affiliate.html">Kemitraan</a><a data-nav="faq" href="faq.html">FAQ</a><a data-nav="contact" href="contact.html">Kontak</a>
+      </nav>
+      <a href="products.html" class="omega-btn-secondary">Lihat Produk</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="omega-hero">
+      <div class="omega-container">
+        <span class="omega-pill">Kontak Resmi</span>
+        <h1>Tim Omegasqua siap bantu konsultasi produk dan strategi affiliate Anda.</h1>
+        <p class="omega-section-lead">Gunakan kanal resmi agar komunikasi lebih cepat, aman, dan terdokumentasi.</p>
+      </div>
+    </section>
+
+    <section class="omega-section">
+      <div class="omega-container omega-grid two-col">
+        <article class="omega-card">
+          <p class="omega-kicker">Email Support</p>
+          <h3><a data-dyn-email-link href="#">support@omegasqua.id</a></h3>
+          <p class="omega-section-lead">Untuk pertanyaan materi produk, legal copy, dan kebutuhan dokumentasi kampanye.</p>
+        </article>
+        <article class="omega-card">
+          <p class="omega-kicker">WhatsApp Admin</p>
+          <h3><a data-dyn-wa-link href="#">+6281234567890</a></h3>
+          <p class="omega-section-lead">Untuk follow-up cepat terkait order, referral, dan aktivasi akses partner.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="omega-section">
+      <div class="omega-container omega-card">
+        <p class="omega-kicker">Form Kontak Singkat</p>
+        <h2>Kirim kebutuhan Anda</h2>
+        <p class="omega-section-lead">Form ini memakai alur sederhana (mailto) agar tetap kompatibel dengan arsitektur statis saat ini.</p>
+        <form action="mailto:support@omegasqua.id" method="post" enctype="text/plain" class="omega-grid" style="margin-top:var(--space-5)">
+          <input type="text" name="nama" placeholder="Nama Anda" required class="p-3 rounded-xl border" aria-label="Nama">
+          <input type="email" name="email" placeholder="Email aktif" required class="p-3 rounded-xl border" aria-label="Email">
+          <textarea name="pesan" rows="4" placeholder="Ceritakan kebutuhan Anda" required class="p-3 rounded-xl border" aria-label="Pesan"></textarea>
+          <button class="omega-btn" type="submit">Kirim Pesan</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="omega-section">
+      <div class="omega-container">
+        <h2>FAQ Kontak</h2>
+        <div id="contact-faq" class="omega-grid" style="margin-top:var(--space-6)"></div>
+      </div>
+    </section>
+
+    <section class="omega-section">
+      <div class="omega-container omega-compliance">
+        <p><strong>Perlindungan Konsumen:</strong> Tim kami tidak meminta data sensitif seperti OTP, PIN, atau password akun.</p>
+        <p class="omega-disclaimer"><strong>Disclaimer:</strong> Semua informasi kesehatan dari kanal support bersifat edukatif dan bukan pengganti nasihat medis profesional.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="omega-footer">
+    <div class="omega-container omega-footer-grid">
+      <div><h3 class="dyn-site-name">Omegasqua</h3><p class="dyn-site-tagline"></p></div>
+      <div><p class="omega-kicker">Navigasi</p><p><a href="products.html">Produk</a></p><p><a href="affiliate.html">Affiliate</a></p></div>
+      <div><p class="omega-kicker">Kontak</p><p>Email: <a href="#" id="dyn-email-link">-</a></p><p>WhatsApp: <a href="#" id="dyn-wa-link">-</a></p></div>
+    </div>
+  </footer>
+
+  <div class="mobile-cta-bar"><a id="sticky-mobile-link" href="contact.html">Chat Tim Omegasqua</a></div>
+</body>
+</html>

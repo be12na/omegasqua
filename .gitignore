@@ -1,0 +1,11 @@
+# Installer output artifacts
+installer/
+
+# Optional alternative packaging output
+build/
+
+# Dependencies
+node_modules/
+
+# Local analysis artifacts
+token-usage-output.txt
