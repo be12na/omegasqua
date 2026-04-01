@@ -2,10 +2,10 @@
   const PAGE = document.body.dataset.page || '';
   const DEFAULT_SETTINGS = {
     site_name: 'Omegasqua',
-    site_tagline: 'Website affiliate herbal premium untuk solusi kebutuhan kebugaran keluarga Indonesia.',
+    site_tagline: 'Solusi affiliate herbal terpercaya untuk kebutuhan kesehatan keluarga Indonesia.',
     site_logo: '',
     site_favicon: '',
-    contact_email: 'support@omegasqua.id',
+    contact_email: 'support@omegasqua.my.id',
     wa_admin: '6281234567890'
   };
 
@@ -102,11 +102,20 @@
     return responses;
   }
 
+  function persistLocalStorage(key, value) {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   function getRefCode() {
     const params = new URLSearchParams(window.location.search);
     const fromUrl = params.get('ref') || params.get('aff_id');
     if (fromUrl) {
-      try { localStorage.setItem('cepat_affiliate', fromUrl); } catch (error) {}
+      persistLocalStorage('cepat_affiliate', fromUrl);
       return fromUrl;
     }
     try {
@@ -238,7 +247,7 @@
     const picked = limit > 0 ? list.slice(0, limit) : list;
 
     if (!picked.length) {
-      container.innerHTML = '<div class="omega-empty">Produk sedang diperbarui. Silakan cek kembali beberapa saat lagi.</div>';
+      container.innerHTML = '<div class="omega-empty">Produk belum tersedia saat ini. Hubungi tim kami untuk rekomendasi paket terbaik.</div>';
       return;
     }
 
@@ -282,7 +291,7 @@
     if (!container) return;
     const list = Array.isArray(items) ? items.slice().sort((a, b) => Number(a.harga || 0) - Number(b.harga || 0)).slice(0, 3) : [];
     if (!list.length) {
-      container.innerHTML = '<div class="omega-empty">Paket herbal sedang dimuat.</div>';
+      container.innerHTML = '<div class="omega-empty">Paket promo belum tersedia saat ini. Silakan hubungi admin untuk informasi harga terbaru.</div>';
       return;
     }
 
@@ -422,7 +431,7 @@
     if (!container) return;
     const list = state.products.slice(0, 6);
     if (!list.length) {
-      container.innerHTML = '<div class="omega-empty">Data komisi partner belum tersedia.</div>';
+      container.innerHTML = '<div class="omega-empty">Skema komisi partner akan ditampilkan setelah katalog aktif.</div>';
       return;
     }
     container.innerHTML = `
@@ -482,6 +491,15 @@
     }
 
     state.products = extractProducts(productsRes);
+
+    if (Array.isArray(state.products) && state.products.length) {
+      const payload = {
+        items: state.products,
+        time: Date.now(),
+        version: String(catalogVersion || '')
+      };
+      persistLocalStorage('cepat_public_catalog', JSON.stringify(payload));
+    }
     state.pages = mapPages(pagesRes);
     state.pageMap = buildPageMap(state.pages);
 

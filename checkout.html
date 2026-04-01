@@ -46,7 +46,7 @@
                 
                 if(data.site_name) {
                     if(!window.hasProductTitle) {
-                        document.title = document.title.replace(/Cepat Digital/gi, data.site_name).replace(/Cepat/gi, data.site_name);
+                        document.title = `Checkout Premium - ${data.site_name}`;
                         window.setMeta('property', 'og:title', data.site_name);
                         window.setMeta('name', 'title', data.site_name);
                     }
@@ -92,7 +92,7 @@
         })();
     </script>
     
-    <title>Checkout Premium - Cepat Digital</title>
+    <title>Checkout Premium - Omegasqua</title>
     <link rel="preload" as="style" href="tailwind.css?v=2026_1">
     <link rel="stylesheet" href="tailwind.css?v=2026_1">
     <script defer src="assets/vendor/lucide.min.js?v=0.577.0"></script>
@@ -128,7 +128,7 @@
         /* ===== FORM VALIDATION STATES ===== */
         .input-wrapper { position: relative; }
         .validation-icon {
-            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            position: absolute; right: 14px; top: 50%;
             width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             opacity: 0; transition: opacity 0.15s ease, transform 0.15s ease; transform: translateY(-50%) scale(0.8);
         }
@@ -313,7 +313,7 @@
                             <div class="input-wrapper">
                                 <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400 transition-colors z-10 pointer-events-none" id="icon-name"></i>
                                 <input type="text" id="cust-name" name="nama" autocomplete="name" class="form-input w-full bg-slate-50 border-2 border-slate-200 focus:bg-white focus:border-indigo-500 rounded-xl py-3.5 pl-11 pr-12 font-semibold text-slate-800 outline-none placeholder:text-slate-400 placeholder:font-medium text-sm" placeholder="Nama lengkap Anda" required minlength="3">
-                                <div class="validation-icon" id="vi-name"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path class="check-stroke" d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="validation-icon" id="vi-name"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><title>Input valid</title><path class="check-stroke" d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             </div>
                             <div class="validation-msg" id="vm-name"></div>
                         </div>
@@ -324,7 +324,7 @@
                             <div class="input-wrapper">
                                 <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400 transition-colors z-10 pointer-events-none" id="icon-email"></i>
                                 <input type="email" id="cust-email" name="email" autocomplete="email" class="form-input w-full bg-slate-50 border-2 border-slate-200 focus:bg-white focus:border-indigo-500 rounded-xl py-3.5 pl-11 pr-12 font-semibold text-slate-800 outline-none placeholder:text-slate-400 placeholder:font-medium text-sm" placeholder="email@aktif.com" required>
-                                <div class="validation-icon" id="vi-email"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path class="check-stroke" d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="validation-icon" id="vi-email"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><title>Input valid</title><path class="check-stroke" d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             </div>
                             <div class="validation-msg" id="vm-email"></div>
                         </div>
@@ -335,7 +335,7 @@
                             <div class="input-wrapper">
                                 <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-sm text-slate-400 border-r-2 border-slate-200 pr-3 transition-colors z-10 pointer-events-none" id="wa-prefix">+62</span>
                                 <input type="tel" id="cust-wa" name="whatsapp" autocomplete="tel" class="form-input w-full bg-slate-50 border-2 border-slate-200 focus:bg-white focus:border-indigo-500 rounded-xl py-3.5 pl-[72px] pr-12 font-semibold text-slate-800 outline-none placeholder:text-slate-400 placeholder:font-medium text-sm" placeholder="81234567890" required pattern="[0-9]*" inputmode="numeric" minlength="9">
-                                <div class="validation-icon" id="vi-wa"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path class="check-stroke" d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                                <div class="validation-icon" id="vi-wa"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><title>Input valid</title><path class="check-stroke" d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                             </div>
                             <div class="validation-msg" id="vm-wa"></div>
                             <p class="text-[11px] text-slate-400 mt-1.5 ml-0.5 font-medium">Contoh: 81234567890 (tanpa angka 0 di depan)</p>
@@ -384,6 +384,7 @@
                         <!-- Animated Checkmark -->
                         <div class="w-16 h-16 mx-auto mb-5 scale-in">
                             <svg viewBox="0 0 64 64" fill="none">
+                                <title>Pesanan berhasil</title>
                                 <circle cx="32" cy="32" r="30" stroke="#e0e7ff" stroke-width="3"/>
                                 <circle cx="32" cy="32" r="30" stroke="#4f46e5" stroke-width="3" stroke-dasharray="190" stroke-dashoffset="0" style="animation: none"/>
                                 <path class="check-anim" d="M20 33L28 41L44 23" stroke="#4f46e5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -415,7 +416,7 @@
                                     <h4 id="res-bank-norek" class="text-xl font-mono font-bold text-slate-800 tracking-wider my-1">...</h4>
                                     <p id="res-bank-owner" class="text-[10px] font-bold text-slate-500 uppercase">...</p>
                                 </div>
-                                <button onclick="copyRek()" id="btn-copy-rek" class="text-indigo-600 bg-indigo-50 px-4 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider hover:bg-indigo-600 hover:text-white transition-all duration-150 flex items-center gap-1.5">
+                                <button type="button" onclick="copyRek()" id="btn-copy-rek" class="text-indigo-600 bg-indigo-50 px-4 py-2.5 rounded-xl font-bold text-[10px] uppercase tracking-wider hover:bg-indigo-600 hover:text-white transition-all duration-150 flex items-center gap-1.5">
                                     <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin
                                 </button>
                             </div>
@@ -701,8 +702,14 @@
                 prefilled = true;
             } else {
                 try {
-                    const pubCat = JSON.parse(localStorage.getItem('cepat_public_catalog') || '[]');
-                    const p = pubCat.find(x => x.id === productId);
+                    const rawCatalog = JSON.parse(localStorage.getItem('cepat_public_catalog') || 'null');
+                    const catalogPayload = (rawCatalog && typeof rawCatalog === 'object' && !Array.isArray(rawCatalog))
+                        ? rawCatalog
+                        : null;
+                    const pubCat = Array.isArray(catalogPayload && catalogPayload.items) ? catalogPayload.items : [];
+                    const catalogCachedAt = Number((catalogPayload && catalogPayload.time) || 0);
+                    const isCatalogFresh = !!catalogCachedAt && ((Date.now() - catalogCachedAt) <= PRODUCT_CACHE_AGE);
+                    const p = isCatalogFresh ? pubCat.find(x => String(x.id) === String(productId)) : null;
                     if(p) {
                         document.getElementById('display-title').innerText = p.title;
                         document.getElementById('display-total-top').innerText = 'Rp ' + Number(p.harga).toLocaleString('id-ID');

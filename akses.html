@@ -24,7 +24,7 @@
                 
                 // Auto Replace Text di Title Browser
                 if(data.site_name) {
-                    document.title = document.title.replace(/Cepat Digital/gi, data.site_name).replace(/Cepat/gi, data.site_name);
+                    document.title = `Akses Materi - ${data.site_name}`;
                 }
 
                 const updateDomElements = () => {
@@ -65,7 +65,7 @@
             }
         })();
     </script>
-    <title>Akses Materi - Cepat Digital</title>
+    <title>Akses Materi - Omegasqua</title>
     <link rel="preload" as="style" href="tailwind.css?v=2026_1">
     <link rel="stylesheet" href="tailwind.css?v=2026_1">
     <script defer src="assets/vendor/lucide.min.js?v=0.577.0"></script>
@@ -81,11 +81,11 @@
     <header class="bg-white border-b border-slate-200 py-4 sticky top-0 z-50">
         <div class="max-w-3xl mx-auto px-6 flex justify-between items-center">
             <div class="text-xl font-black tracking-tighter flex items-center gap-2 text-indigo-600 uppercase">
-                <i data-lucide="layers" class="w-6 h-6"></i> <span class="dyn-site-name">CEPAT</span>
+                <i data-lucide="layers" class="w-6 h-6"></i> <span class="dyn-site-name">OMEGASQUA</span>
             </div>
             <div class="flex items-center gap-6">
                 <a href="dashboard.html" class="text-slate-500 text-[10px] font-bold uppercase tracking-widest hover:text-indigo-600 transition-colors">Dashboard</a>
-                <button onclick="logout()" class="text-slate-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:text-red-500 transition-colors">
+                <button type="button" onclick="logout()" class="text-slate-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 hover:text-red-500 transition-colors">
                     Keluar <i data-lucide="log-out" class="w-4 h-4"></i>
                 </button>
             </div>
