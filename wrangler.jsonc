@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "omegasqua-web",
+  "name": "omegasqua",
   "main": "_worker.js",
   "compatibility_date": "2025-09-27",
   "observability": {
@@ -15,7 +15,7 @@
     "nodejs_compat"
   ],
   "vars": {
-    "ALLOWED_ORIGINS": "https://prodig.zhost.digital,https://www.prodig.zhost.digital,https://omegasqua.com,https://www.omegasqua.com",
+    "ALLOWED_ORIGINS": "https://omegasqua.my.id,https://www.omegasqua.my.id",
     "APP_GAS_URL": "https://script.google.com/macros/s/AKfycbxvpwcjg4pwXiXFVrCZ2W_qtSaahMkbbowPqvNGPJKkhO4zpLFsP2MF8lkpMoZ37LHy/exec",
     "MOOTA_GAS_URL": "https://script.google.com/macros/s/AKfycbxvpwcjg4pwXiXFVrCZ2W_qtSaahMkbbowPqvNGPJKkhO4zpLFsP2MF8lkpMoZ37LHy/exec"
   },
@@ -23,7 +23,7 @@
     "staging": {
       "name": "omegasqua-web-staging",
       "vars": {
-        "ALLOWED_ORIGINS": "https://staging.prodig.zhost.digital,https://staging.omegasqua.com",
+        "ALLOWED_ORIGINS": "https://staging.omegasqua.my.id",
         "APP_GAS_URL": "https://script.google.com/macros/s/AKfycbxvpwcjg4pwXiXFVrCZ2W_qtSaahMkbbowPqvNGPJKkhO4zpLFsP2MF8lkpMoZ37LHy/exec",
         "MOOTA_GAS_URL": "https://script.google.com/macros/s/AKfycbxvpwcjg4pwXiXFVrCZ2W_qtSaahMkbbowPqvNGPJKkhO4zpLFsP2MF8lkpMoZ37LHy/exec"
       }

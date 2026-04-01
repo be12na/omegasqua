@@ -14,20 +14,17 @@
  */
 var SITE_CONFIG = {
     // ── Domain Utama (Production) ──────────────────────────
-    PRIMARY_DOMAIN: 'omegasqua.com',
+    PRIMARY_DOMAIN: 'omegasqua.my.id',
 
     // ── Daftar Domain yang Diizinkan ───────────────────────
     ALLOWED_DOMAINS: [
-        'omegasqua.com',
-        'www.omegasqua.com',
-        'prodig.zhost.digital',
-        'www.prodig.zhost.digital'
+        'omegasqua.my.id',
+        'www.omegasqua.my.id'
     ],
 
     // ── Pattern Subdomain yang Diizinkan ───────────────────
     ALLOWED_SUBDOMAIN_SUFFIXES: [
-        '.omegasqua.com',
-        '.prodig.zhost.digital'
+        '.omegasqua.my.id'
     ],
 
     // ── Cloudflare Pages Preview ───────────────────────────
