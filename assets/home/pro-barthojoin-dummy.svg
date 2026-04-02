@@ -1,0 +1,95 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="124" y1="84" x2="1020" y2="790" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FBF5"/>
+      <stop offset="1" stop-color="#E7F1E4"/>
+    </linearGradient>
+    <linearGradient id="card" x1="200" y1="140" x2="980" y2="780" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".98"/>
+      <stop offset="1" stop-color="#F1F7EE"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="471" y1="188" x2="735" y2="784" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBFDF9"/>
+      <stop offset=".5" stop-color="#F0F5EC"/>
+      <stop offset="1" stop-color="#E4EDE0"/>
+    </linearGradient>
+    <linearGradient id="cap" x1="499" y1="180" x2="706" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2B5033"/>
+      <stop offset="1" stop-color="#173521"/>
+    </linearGradient>
+    <linearGradient id="label" x1="474" y1="372" x2="731" y2="668" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2B6E3D"/>
+      <stop offset="1" stop-color="#17432A"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#F5DE87"/>
+      <stop offset="1" stop-color="#C8931C"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(856 252) rotate(113.702) scale(298.884 412.72)">
+      <stop stop-color="#D2E7CE"/>
+      <stop offset="1" stop-color="#D2E7CE" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="252" y="116" width="655" height="724" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="26"/>
+      <feGaussianBlur stdDeviation="28"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.109804 0 0 0 0 0.247059 0 0 0 0 0.141176 0 0 0 0.2 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_1" result="shape"/>
+    </filter>
+    <filter id="blur" x="113" y="612" width="972" height="173" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="24" result="effect1_foregroundBlur_1_1"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="900" rx="48" fill="url(#bg)"/>
+  <rect x="88" y="76" width="1024" height="748" rx="40" fill="url(#card)" stroke="#D6E4D4"/>
+  <ellipse cx="605" cy="698" rx="430" ry="46" fill="#BBD0B8" fill-opacity=".18"/>
+  <ellipse cx="792" cy="258" rx="250" ry="196" fill="url(#halo)"/>
+  <g filter="url(#blur)">
+    <ellipse cx="596" cy="688" rx="378" ry="28" fill="#5F7D63" fill-opacity=".34"/>
+  </g>
+
+  <g opacity=".96">
+    <path d="M265 604C278 548 330 506 392 506C452 506 508 548 521 604C463 648 325 648 265 604Z" fill="#DDEADF"/>
+    <path d="M298 592C314 556 348 532 386 532C426 532 460 555 474 592C437 618 335 620 298 592Z" fill="#9AC485"/>
+    <path d="M366 474C333 514 322 555 326 578C356 576 384 561 405 536C426 510 434 474 428 446C406 449 387 454 366 474Z" fill="#5D9A57"/>
+    <path d="M437 476C477 516 489 556 486 578C456 576 427 561 406 537C384 511 377 474 382 445C400 447 417 454 437 476Z" fill="#7CB26F"/>
+    <path d="M352 557C371 546 403 542 432 547" stroke="#EDF6EC" stroke-width="7" stroke-linecap="round"/>
+  </g>
+
+  <g opacity=".94">
+    <ellipse cx="877" cy="579" rx="94" ry="68" fill="#FFF3D7"/>
+    <ellipse cx="846" cy="548" rx="36" ry="22" transform="rotate(-22 846 548)" fill="#EDC56A"/>
+    <ellipse cx="895" cy="575" rx="36" ry="22" transform="rotate(17 895 575)" fill="#E7B44F"/>
+    <ellipse cx="845" cy="606" rx="36" ry="22" transform="rotate(15 845 606)" fill="#D99A34"/>
+    <ellipse cx="910" cy="622" rx="36" ry="22" transform="rotate(-18 910 622)" fill="#F0CF7F"/>
+    <ellipse cx="876" cy="584" rx="24" ry="14" transform="rotate(17 876 584)" fill="#F6E3AE" fill-opacity=".7"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="500" y="146" width="205" height="94" rx="24" fill="url(#cap)"/>
+    <rect x="521" y="134" width="160" height="28" rx="14" fill="#25422B"/>
+    <rect x="455" y="214" width="294" height="492" rx="92" fill="url(#glass)" stroke="#D6E0D2"/>
+    <rect x="474" y="358" width="256" height="257" rx="34" fill="url(#label)"/>
+    <rect x="494" y="382" width="216" height="64" rx="20" fill="#F7FAF4" fill-opacity=".16"/>
+    <rect x="496" y="637" width="212" height="34" rx="17" fill="#F1F7EE" fill-opacity=".16"/>
+    <path d="M522 253C530 226 548 210 575 204" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-opacity=".62"/>
+    <path d="M486 275C498 246 516 226 540 212" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round" stroke-opacity=".34"/>
+    <rect x="583" y="248" width="121" height="446" rx="60.5" fill="#FFFFFF" fill-opacity=".26"/>
+    <circle cx="520" cy="477" r="12" fill="url(#gold)"/>
+    <text x="551" y="435" fill="#E6F3E7" font-family="Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="4">OMEGASQUA</text>
+    <text x="520" y="492" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="42" font-weight="700">PRO</text>
+    <text x="520" y="544" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="44" font-weight="700">BARTHOJOIN</text>
+    <text x="520" y="585" fill="#DCECDC" font-family="Arial, sans-serif" font-size="22" font-weight="600">HERBAL SUPPORT FOR JOINT COMFORT</text>
+    <text x="520" y="655" fill="#F3E0A6" font-family="Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="3">SPIRULINA  FISH EXTRACT  SEA CUCUMBER</text>
+  </g>
+
+  <circle cx="1027" cy="165" r="28" fill="#FFFFFF" fill-opacity=".62"/>
+  <circle cx="163" cy="177" r="18" fill="#FFFFFF" fill-opacity=".55"/>
+  <path d="M901 175C953 197 991 231 1017 275" stroke="#C8DCC6" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 16"/>
+  <path d="M207 215C258 200 312 198 370 212" stroke="#DCE9DB" stroke-width="5" stroke-linecap="round"/>
+</svg>

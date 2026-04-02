@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "updated_at": "2026-04-03T11:50:00+07:00",
+  "shards": [
+    {
+      "id": "worker-core",
+      "owner_agent": "explore",
+      "paths": [
+        "_worker.js",
+        "worker-budget-audit.js",
+        "wrangler.jsonc"
+      ],
+      "handoff_to": [
+        "runtime-config",
+        "apps-script-backend"
+      ]
+    },
+    {
+      "id": "installer-orchestration",
+      "owner_agent": "explore",
+      "paths": [
+        "manifest.json",
+        "scripts/sync-installer.js",
+        "setup.js",
+        "validate-config.js"
+      ],
+      "handoff_to": [
+        "docs-governance",
+        "test-automation"
+      ]
+    },
+    {
+      "id": "public-surface",
+      "owner_agent": "librarian",
+      "paths": [
+        "index.html",
+        "about.html",
+        "products.html",
+        "assets/"
+      ],
+      "handoff_to": [
+        "installer-orchestration"
+      ]
+    },
+    {
+      "id": "admin-surface",
+      "owner_agent": "explore",
+      "paths": [
+        "admin-area.html",
+        "admin-orders.html",
+        "dashboard.html"
+      ],
+      "handoff_to": [
+        "worker-core",
+        "test-automation"
+      ]
+    },
+    {
+      "id": "runtime-config",
+      "owner_agent": "metis",
+      "paths": [
+        "config.js",
+        "site.config.js",
+        "validate-seo.js"
+      ],
+      "handoff_to": [
+        "worker-core",
+        "public-surface",
+        "admin-surface"
+      ]
+    },
+    {
+      "id": "apps-script-backend",
+      "owner_agent": "momus",
+      "paths": [
+        "appscript.js",
+        "MOOTA_WEBHOOK_PROXY_ARCHITECTURE.md"
+      ],
+      "handoff_to": [
+        "admin-surface",
+        "docs-governance"
+      ]
+    },
+    {
+      "id": "test-automation",
+      "owner_agent": "oracle",
+      "paths": [
+        "tests/",
+        "scripts/admin-forgot-password.js"
+      ],
+      "handoff_to": [
+        "installer-orchestration"
+      ]
+    },
+    {
+      "id": "docs-governance",
+      "owner_agent": "librarian",
+      "paths": [
+        "README.md",
+        "AUDIT_CLOUDFLARE_WORKERS.md",
+        "CONTEXT_LEDGER.md",
+        "INSTALLER_BUILD.md"
+      ],
+      "handoff_to": [
+        "worker-core",
+        "installer-orchestration"
+      ]
+    }
+  ]
+}

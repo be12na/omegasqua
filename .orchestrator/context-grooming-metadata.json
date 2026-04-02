@@ -1,0 +1,71 @@
+{
+  "version": 2,
+  "updated_at": "2026-04-03T11:40:00+07:00",
+  "current_milestone": "parallel-subagent-orchestration-and-context-budget-control",
+  "budget_policy": {
+    "target_live_context_pct": 50,
+    "alert_yellow_pct": 50,
+    "hard_red_pct": 60,
+    "emergency_stop_pct": 70
+  },
+  "grooming_schedule": {
+    "heartbeat_interval_sec": 30,
+    "hard_groom_interval_sec": 180,
+    "offload_interval_sec": 300
+  },
+  "grooming_actions": [
+    {
+      "action": "distill",
+      "scope": "token-baseline-and-stale-sessions",
+      "reason": "preserve key metrics while shrinking raw context"
+    },
+    {
+      "action": "prune",
+      "scope": "redundant background/session outputs",
+      "reason": "remove non-actionable noise and failed-session traces"
+    },
+    {
+      "action": "offload",
+      "scope": "stale-progress-logs-and-large-artifacts",
+      "reason": "compress and move stale context payloads to archive while preserving recovery index"
+    },
+    {
+      "action": "measure",
+      "scope": "token-usage",
+      "reason": "verify active context remains within target band"
+    }
+  ],
+  "latest_measurement": {
+    "local_total_tokens": 0,
+    "main_session_total_tokens": 0,
+    "cache_hit_rate_pct": 0,
+    "risk_band": "unknown",
+    "note": "pending runtime-controller measurement cycle"
+  },
+  "recovery_index": {
+    "strategy_summary": "single-coordinator epoch dispatch with adaptive scaling and anti-thrashing",
+    "risk_summary": [
+      "token saturation",
+      "monitoring lag",
+      "over-parallelization overhead",
+      "shared-assumption fanout"
+    ],
+    "oracle_key_thresholds": {
+      "green_lt_pct": 55,
+      "yellow_55_70_pct": true,
+      "red_gt_pct": 70,
+      "quality_pass_min_pct": 95,
+      "conflict_rate_max_pct": 15
+    }
+  },
+  "workspace_cleanup": {
+    "removed": [],
+    "kept_with_reason": [
+      {
+        "path": "node_modules/nwsapi/dist/lint.log",
+        "reason": "dependency-owned artifact; left intact to avoid package-state side effects"
+      }
+    ],
+    "offloaded_with_recovery": []
+  }
+}

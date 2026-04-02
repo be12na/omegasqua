@@ -1,0 +1,92 @@
+version: 2
+updated_at: 2026-04-03T11:35:00+07:00
+strategy:
+  model: single-coordinator-epoch-dispatch
+  objective: maximize_safe_parallelism_under_context_budget
+context_budget:
+  live_work_pct_max: 50
+  synthesis_reserve_pct: 20
+  recovery_metadata_pct: 30
+  bands:
+    green_lt_pct: 50
+    yellow_gte_pct: 50
+    yellow_lte_pct: 60
+    red_gt_pct: 60
+    emergency_stop_pct: 70
+parallelism:
+  runtime_cap_hard: 5
+  safe_cap_formula: floor((0.50W - coordinator_cost) / avg_agent_cost)
+  scale_up:
+    require_consecutive_green_cycles: 2
+    quality_pass_rate_min_pct: 95
+    backlog_required: true
+    step: +1
+  scale_down:
+    require_consecutive_red_cycles: 1
+    rework_or_conflict_rate_max_pct: 15
+    step: -1
+anti_thrashing:
+  cooldown_cycles_after_scaling: 2
+  min_dwell_cycles_before_reversal: 3
+  hysteresis_enabled: true
+backpressure:
+  queue_to_active_ratio_max: 2
+  on_breach:
+    - pause_low_priority_intake
+    - tighten_task_scope
+    - summary_first_mode
+reporting:
+  heartbeat_interval_sec: 30
+  max_monitoring_gap_sec: 45
+  required_fields:
+    - shard_id
+    - status
+    - progress_pct
+    - blockers
+    - next_action
+drift_correction:
+  triggers:
+    - shared_failure_rate_gt_25pct
+    - red_band_persist_gt_3_epochs
+    - quality_pass_rate_lt_90pct
+  actions:
+    - pause_new_dispatch
+    - run_canary_wave
+    - rebaseline_prompts
+    - relaunch_affected_shards
+checkpointing:
+  mode: checkpoint-before-prune
+  required_checkpoint_fields:
+    - goal
+    - inputs
+    - decisions
+    - artifacts
+    - open_risks
+load_balancing:
+  policy: weighted-least-loaded
+  agent_weights:
+    explore: 1.0
+    librarian: 0.9
+    metis: 0.6
+    momus: 0.6
+    oracle: 0.4
+  rebalance_on:
+    - stalled_heartbeat
+    - queue_hotspot
+    - conflict_spike
+communication_pipeline:
+  bus: append-only-ndjson
+  channels:
+    control_to_agent: .orchestrator/runtime/dispatch.ndjson
+    agent_to_control: .orchestrator/runtime/heartbeat.ndjson
+    control_audit: .orchestrator/runtime/control-audit.ndjson
+  deduplication:
+    fingerprint: sha1(task_scope + objective + milestone)
+    skip_if_seen_within_hours: 24
+deviation_correction:
+  auto_action_window_sec: 120
+  correction_actions:
+    - narrow_scope
+    - reroute_to_specialist
+    - relaunch_single_shard
+    - hard_pause_non_critical
