@@ -220,14 +220,18 @@
     emailLinks.forEach((emailLink) => {
       if (!email) return;
       emailLink.href = `mailto:${email}`;
-      emailLink.textContent = email;
+      if (!emailLink.hasAttribute('data-link-only')) {
+        emailLink.textContent = email;
+      }
     });
 
     const waLinks = document.querySelectorAll('#dyn-wa-link, [data-dyn-wa-link]');
     waLinks.forEach((waLink) => {
       if (!wa) return;
       waLink.href = `https://wa.me/${wa}`;
-      waLink.textContent = wa.startsWith('62') ? `+${wa}` : wa;
+      if (!waLink.hasAttribute('data-link-only')) {
+        waLink.textContent = wa.startsWith('62') ? `+${wa}` : wa;
+      }
     });
   }
 
