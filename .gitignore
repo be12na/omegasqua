@@ -9,3 +9,7 @@ node_modules/
 
 # Local analysis artifacts
 token-usage-output.txt
+
+# Local reference clones (do not track as submodules)
+opentelemetry-collector/
+opentelemetry-spec/
