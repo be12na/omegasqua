@@ -1,5 +1,5 @@
 :root {
-  --color-bg: #f4f7f2;
+  --color-bg: #f3f6f2;
   --color-surface: #ffffff;
   --color-surface-soft: #eef5ea;
   --color-text: #1d2a1f;
@@ -10,8 +10,8 @@
   --color-border: #dce7dd;
   --color-danger: #8f2f2f;
 
-  --shadow-soft: 0 16px 40px -30px rgba(19, 56, 31, 0.38);
-  --shadow-lift: 0 24px 48px -26px rgba(20, 58, 31, 0.4);
+  --shadow-soft: 0 18px 44px -32px rgba(19, 56, 31, 0.34);
+  --shadow-lift: 0 28px 56px -30px rgba(20, 58, 31, 0.38);
 
   --radius-sm: 0.75rem;
   --radius-md: 1rem;
@@ -56,9 +56,10 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   z-index: 80;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border);
-  background: rgba(244, 247, 242, 0.92);
+  background: rgba(248, 251, 247, 0.94);
+  box-shadow: 0 10px 30px -28px rgba(14, 43, 24, 0.7);
 }
 
 .omega-header-inner {
@@ -103,11 +104,14 @@ a { color: inherit; }
 
 .omega-nav a {
   text-decoration: none;
-  color: var(--color-muted);
-  font-size: 0.82rem;
+  color: #3b5342;
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.omega-nav a:hover {
+  color: var(--color-primary-strong);
 }
 
 .omega-nav a[aria-current="page"] { color: var(--color-primary-strong); }
@@ -128,7 +132,7 @@ a { color: inherit; }
 .omega-btn {
   background: var(--color-primary);
   color: #fff;
-  padding: 0.8rem 1.2rem;
+  padding: 0.84rem 1.26rem;
   box-shadow: var(--shadow-soft);
 }
 
@@ -138,11 +142,11 @@ a { color: inherit; }
   background: var(--color-surface);
   color: var(--color-primary-strong);
   border: 1px solid var(--color-border);
-  padding: 0.72rem 1.15rem;
+  padding: 0.76rem 1.18rem;
 }
 
 .omega-hero {
-  padding: var(--space-12) 0 var(--space-10);
+  padding: var(--space-12) 0;
 }
 
 .omega-pill {
@@ -409,7 +413,7 @@ body[data-page="home"] {
 }
 
 .omega-home-lead {
-  max-width: 58rem;
+  max-width: 42rem;
 }
 
 .omega-home-actions {
@@ -556,7 +560,7 @@ body[data-page="home"] {
 }
 
 .omega-home-section-heading {
-  max-width: 45rem;
+  max-width: 47rem;
   margin-bottom: var(--space-6);
 }
 
@@ -608,7 +612,7 @@ body[data-page="home"] {
 }
 
 .omega-home-product-stack {
-  gap: var(--space-6);
+  gap: var(--space-8);
 }
 
 .omega-home-product-panel {
@@ -619,6 +623,7 @@ body[data-page="home"] {
   border-radius: calc(var(--radius-xl) + 0.2rem);
   box-shadow: var(--shadow-lift);
   padding: var(--space-6);
+  align-items: start;
 }
 
 .omega-home-product-panel-joint {
@@ -634,6 +639,8 @@ body[data-page="home"] {
 }
 
 .omega-home-product-media {
+  width: min(100%, 360px);
+  margin-inline: auto;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(216, 227, 217, 0.95);
   border-radius: calc(var(--radius-lg) + 0.1rem);
@@ -644,13 +651,20 @@ body[data-page="home"] {
 .omega-home-product-media img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: linear-gradient(155deg, #f6faf3, #edf4e8);
+  padding: var(--space-5);
 }
 
 .omega-home-product-content {
   display: grid;
   gap: var(--space-4);
+}
+
+.omega-home-product-content .omega-section-lead {
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
 .omega-home-info-grid,
@@ -712,10 +726,11 @@ body[data-page="home"] {
 }
 
 .omega-home-product-note {
-  margin-top: var(--space-4);
+  margin-top: var(--space-5);
   color: #5f7465;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   line-height: 1.6;
+  text-align: center;
 }
 
 .omega-home-step-grid {
@@ -781,7 +796,7 @@ body[data-page="home"] {
   .omega-footer-grid { grid-template-columns: 1.3fr 1fr 1fr; }
   .omega-home-hero-grid { grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); }
   .omega-home-visual-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .omega-home-product-panel { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); }
+  .omega-home-product-panel { grid-template-columns: minmax(0, 0.74fr) minmax(0, 1.26fr); }
   .omega-home-product-panel-reverse .omega-home-product-media { order: 2; }
   .omega-home-product-panel-reverse .omega-home-product-content { order: 1; }
   .omega-home-final-cta { grid-template-columns: minmax(0, 1.1fr) auto; }
@@ -806,5 +821,9 @@ body[data-page="home"] {
   .omega-home-product-panel,
   .omega-home-final-cta {
     padding: var(--space-5);
+  }
+
+  .omega-home-product-media {
+    width: min(100%, 300px);
   }
 }

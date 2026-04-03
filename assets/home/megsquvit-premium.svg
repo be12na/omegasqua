@@ -1,0 +1,96 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="188" y1="74" x2="1048" y2="792" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FAF7F1"/>
+      <stop offset="1" stop-color="#F1ECE2"/>
+    </linearGradient>
+    <linearGradient id="card2" x1="148" y1="126" x2="1032" y2="778" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".98"/>
+      <stop offset="1" stop-color="#F7F1E6"/>
+    </linearGradient>
+    <linearGradient id="bottle2" x1="453" y1="186" x2="770" y2="762" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#16314A"/>
+      <stop offset=".54" stop-color="#0E2741"/>
+      <stop offset="1" stop-color="#07172B"/>
+    </linearGradient>
+    <linearGradient id="cap2" x1="501" y1="160" x2="714" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DDBA5E"/>
+      <stop offset="1" stop-color="#B78829"/>
+    </linearGradient>
+    <linearGradient id="label2" x1="488" y1="356" x2="734" y2="646" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EFE4CA"/>
+      <stop offset="1" stop-color="#D8C39B"/>
+    </linearGradient>
+    <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(255 236) rotate(22.9058) scale(273.123 353.971)">
+      <stop stop-color="#E9D9B4"/>
+      <stop offset="1" stop-color="#E9D9B4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow2" x="242" y="112" width="694" height="744" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="30"/>
+      <feGaussianBlur stdDeviation="30"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0745098 0 0 0 0 0.117647 0 0 0 0 0.184314 0 0 0 0.22 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_2"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_2" result="shape"/>
+    </filter>
+    <filter id="soft" x="124" y="615" width="956" height="168" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="24" result="effect1_foregroundBlur_1_2"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="900" rx="48" fill="url(#bg2)"/>
+  <rect x="88" y="76" width="1024" height="748" rx="40" fill="url(#card2)" stroke="#E5DCCB"/>
+  <ellipse cx="607" cy="694" rx="428" ry="44" fill="#AB9470" fill-opacity=".16"/>
+  <ellipse cx="280" cy="260" rx="226" ry="190" fill="url(#glow2)"/>
+
+  <g filter="url(#soft)">
+    <ellipse cx="601" cy="690" rx="368" ry="26" fill="#4B5366" fill-opacity=".28"/>
+  </g>
+
+  <g opacity=".96">
+    <path d="M267 614C288 553 342 516 404 516C469 516 523 555 537 614C485 649 319 651 267 614Z" fill="#F0E6D5"/>
+    <path d="M302 605C320 567 355 545 396 545C437 545 471 566 488 605C449 631 339 632 302 605Z" fill="#D8C29C"/>
+    <path d="M354 487C322 522 314 562 318 584C347 581 374 566 392 544C411 522 418 487 414 461C392 463 372 468 354 487Z" fill="#C7A469"/>
+    <path d="M426 487C463 524 474 562 471 585C441 582 413 567 394 545C374 522 367 487 372 460C391 462 409 468 426 487Z" fill="#E2C17E"/>
+    <path d="M345 571C363 561 393 557 421 562" stroke="#FFF5E8" stroke-width="7" stroke-linecap="round"/>
+  </g>
+
+  <g opacity=".98">
+    <ellipse cx="870" cy="577" rx="104" ry="80" fill="#F7E2A1"/>
+    <ellipse cx="830" cy="540" rx="39" ry="24" transform="rotate(-18 830 540)" fill="#F7CE59"/>
+    <ellipse cx="891" cy="565" rx="40" ry="25" transform="rotate(15 891 565)" fill="#EDB93A"/>
+    <ellipse cx="836" cy="612" rx="40" ry="25" transform="rotate(21 836 612)" fill="#E9A522"/>
+    <ellipse cx="909" cy="619" rx="39" ry="24" transform="rotate(-22 909 619)" fill="#F7D26E"/>
+    <ellipse cx="869" cy="584" rx="28" ry="16" transform="rotate(12 869 584)" fill="#FFF3D4" fill-opacity=".62"/>
+  </g>
+
+  <g opacity=".84">
+    <path d="M824 292C850 253 883 227 923 214" stroke="#E8DCC5" stroke-width="5" stroke-linecap="round"/>
+    <path d="M819 329C867 297 913 282 956 282" stroke="#E8DCC5" stroke-width="5" stroke-linecap="round"/>
+    <path d="M820 366C868 348 913 343 956 349" stroke="#E8DCC5" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <g filter="url(#shadow2)">
+    <rect x="496" y="132" width="219" height="96" rx="28" fill="url(#cap2)"/>
+    <rect x="522" y="120" width="166" height="28" rx="14" fill="#D0A654"/>
+    <rect x="448" y="210" width="319" height="504" rx="98" fill="url(#bottle2)"/>
+    <rect x="487" y="358" width="240" height="259" rx="34" fill="url(#label2)"/>
+    <rect x="514" y="390" width="186" height="50" rx="18" fill="#FDF9F1" fill-opacity=".88"/>
+    <rect x="514" y="636" width="186" height="34" rx="17" fill="#F7EEDC" fill-opacity=".3"/>
+    <path d="M529 245C541 225 562 214 587 210" stroke="#F6E8C8" stroke-width="12" stroke-linecap="round" stroke-opacity=".34"/>
+    <rect x="610" y="246" width="92" height="448" rx="46" fill="#E0D1B2" fill-opacity=".08"/>
+    <circle cx="520" cy="475" r="11" fill="#14304A"/>
+    <text x="538" y="424" fill="#18324D" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">OMEGASQUA</text>
+    <text x="520" y="487" fill="#16324B" font-family="Arial, sans-serif" font-size="42" font-weight="700">MEGSQUVIT</text>
+    <text x="520" y="539" fill="#16324B" font-family="Arial, sans-serif" font-size="42" font-weight="700">PREMIUM</text>
+    <text x="520" y="584" fill="#42566B" font-family="Arial, sans-serif" font-size="22" font-weight="700">OMEGA 3  +  SQUALENE  +  VITAMINS</text>
+    <text x="520" y="654" fill="#81611B" font-family="Arial, sans-serif" font-size="21" font-weight="700" letter-spacing="2.5">HEART  BRAIN  STAMINA  CIRCULATION</text>
+  </g>
+
+  <circle cx="168" cy="178" r="18" fill="#FFFFFF" fill-opacity=".56"/>
+  <circle cx="1017" cy="170" r="26" fill="#FFFFFF" fill-opacity=".58"/>
+  <path d="M220 212C267 198 318 197 371 208" stroke="#E9DECD" stroke-width="5" stroke-linecap="round"/>
+</svg>
