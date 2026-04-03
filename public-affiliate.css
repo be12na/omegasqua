@@ -788,6 +788,563 @@ body[data-page="home"] {
   color: #fff;
 }
 
+.omega-market-hero {
+  padding-top: calc(var(--space-12) + var(--space-6));
+  padding-bottom: var(--space-10);
+}
+
+.omega-market-hero-grid,
+.omega-market-catalog-grid,
+.omega-market-split,
+.omega-market-proof-layout {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.omega-market-hero-grid {
+  align-items: center;
+}
+
+.omega-market-hero-copy {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.omega-market-hero-copy h1 {
+  max-width: 13ch;
+}
+
+.omega-market-proof-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: var(--space-2);
+}
+
+.omega-market-proof-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.72rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(204, 221, 206, 0.96);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 18px 34px -28px rgba(25, 61, 34, 0.4);
+  color: #2f4d38;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.omega-market-proof-row svg,
+.omega-market-proof-row i {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-primary-strong);
+}
+
+.omega-market-showcase {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-6);
+  border-radius: calc(var(--radius-xl) + 0.3rem);
+  border: 1px solid rgba(216, 228, 217, 0.95);
+  background:
+    radial-gradient(circle at top right, rgba(212, 160, 23, 0.18), transparent 30%),
+    linear-gradient(180deg, rgba(252, 253, 249, 0.98), rgba(238, 245, 235, 0.97));
+  box-shadow: var(--shadow-lift);
+}
+
+.omega-market-showcase::before {
+  content: "";
+  position: absolute;
+  inset: -3rem -2rem auto auto;
+  width: 12rem;
+  height: 12rem;
+  background: radial-gradient(circle, rgba(31, 106, 58, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.omega-market-showcase-header {
+  position: relative;
+  z-index: 1;
+}
+
+.omega-market-showcase-header h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4.2vw, 2.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.omega-market-mini-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.omega-market-mini-card {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: calc(var(--radius-lg) + 0.1rem);
+  border: 1px solid rgba(216, 228, 217, 0.92);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 22px 40px -32px rgba(22, 58, 31, 0.38);
+}
+
+.omega-market-mini-media {
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(155deg, #f9fcf6, #ecf4e8);
+  min-height: 12rem;
+}
+
+.omega-market-mini-media img {
+  width: 100%;
+  max-width: 12rem;
+  height: auto;
+  object-fit: contain;
+  padding: var(--space-4);
+}
+
+.omega-market-mini-copy {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.omega-market-mini-copy strong {
+  font-size: 1.02rem;
+  line-height: 1.2;
+  color: var(--color-primary-strong);
+}
+
+.omega-market-mini-copy span {
+  color: var(--color-muted);
+  line-height: 1.65;
+}
+
+.omega-market-mini-price {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(31, 106, 58, 0.1);
+  color: var(--color-primary-strong);
+  padding: 0.52rem 0.9rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.omega-market-mini-price-accent {
+  background: rgba(212, 160, 23, 0.14);
+  color: #745500;
+}
+
+.omega-market-showcase-footer {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.omega-market-showcase-metric {
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(214, 226, 215, 0.9);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.omega-market-showcase-metric strong,
+.omega-market-trust-item strong {
+  display: block;
+  color: var(--color-primary-strong);
+  line-height: 1.2;
+}
+
+.omega-market-showcase-metric span,
+.omega-market-trust-item span {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.omega-market-trust-section {
+  padding-top: 0;
+}
+
+.omega-market-trust-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.omega-market-trust-item {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  padding: var(--space-5);
+  border-radius: calc(var(--radius-lg) + 0.1rem);
+  border: 1px solid rgba(218, 229, 219, 0.95);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px -34px rgba(22, 54, 31, 0.38);
+}
+
+.omega-market-trust-item .omega-home-icon {
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.omega-market-heading {
+  max-width: 48rem;
+  margin-bottom: var(--space-6);
+}
+
+.omega-market-product-card {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+  padding: var(--space-6);
+  border-radius: calc(var(--radius-xl) + 0.15rem);
+  border: 1px solid rgba(218, 229, 219, 0.95);
+  box-shadow: var(--shadow-lift);
+}
+
+.omega-market-product-card-joint {
+  background:
+    radial-gradient(circle at top left, rgba(31, 106, 58, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(252, 254, 250, 0.98), rgba(241, 247, 239, 0.98));
+}
+
+.omega-market-product-card-heart {
+  background:
+    radial-gradient(circle at top right, rgba(212, 160, 23, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255, 251, 246, 0.98), rgba(247, 243, 236, 0.98));
+}
+
+.omega-market-product-media {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.omega-market-product-badge {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.58rem 0.94rem;
+  border-radius: 999px;
+  background: rgba(31, 106, 58, 0.1);
+  color: var(--color-primary-strong);
+  font-size: 0.79rem;
+  font-weight: 800;
+}
+
+.omega-market-product-badge-accent {
+  background: rgba(212, 160, 23, 0.14);
+  color: #745500;
+}
+
+.omega-market-product-frame {
+  width: min(100%, 22rem);
+  margin-inline: auto;
+  border-radius: calc(var(--radius-lg) + 0.1rem);
+  border: 1px solid rgba(216, 228, 217, 0.95);
+  background: linear-gradient(155deg, #f9fcf6, #edf4e8);
+  box-shadow: 0 24px 44px -34px rgba(22, 56, 31, 0.36);
+  overflow: hidden;
+}
+
+.omega-market-product-frame-accent {
+  background: linear-gradient(155deg, #fff9f2, #f7efe3);
+}
+
+.omega-market-product-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  padding: var(--space-5);
+}
+
+.omega-market-product-content {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.omega-market-card-top {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.omega-market-card-top h3,
+.omega-market-feature-card h3,
+.omega-market-assurance-card h3,
+.omega-market-process-card h3,
+.omega-market-testimonial-head h3 {
+  margin: 0;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+}
+
+.omega-market-card-top h3 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.omega-market-price-badge {
+  display: grid;
+  gap: 0.2rem;
+  width: fit-content;
+  padding: 0.95rem 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(208, 222, 210, 0.95);
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.omega-market-price-badge span {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6d826f;
+  font-weight: 800;
+}
+
+.omega-market-price-badge strong {
+  font-size: 1.5rem;
+  color: var(--color-primary-strong);
+}
+
+.omega-market-price-badge-accent {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.omega-market-meta-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.omega-market-meta-grid article {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(218, 229, 219, 0.95);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.omega-market-meta-grid span {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6d826f;
+}
+
+.omega-market-meta-grid strong {
+  display: block;
+  margin-top: var(--space-2);
+  line-height: 1.5;
+  color: var(--color-primary-strong);
+}
+
+.omega-market-benefits {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.omega-market-benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--color-text);
+  line-height: 1.65;
+}
+
+.omega-market-benefits svg,
+.omega-market-benefits i,
+.omega-market-product-badge svg,
+.omega-market-product-badge i {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.omega-market-split {
+  align-items: start;
+}
+
+.omega-market-feature-grid,
+.omega-market-assurance-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.omega-market-feature-card,
+.omega-market-assurance-card {
+  height: 100%;
+}
+
+.omega-market-process-card {
+  padding: var(--space-6);
+  border-radius: calc(var(--radius-xl) + 0.1rem);
+  background:
+    radial-gradient(circle at top right, rgba(212, 160, 23, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(243, 247, 241, 0.98));
+}
+
+.omega-market-process-list {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.omega-market-process-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.omega-market-process-item > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: rgba(31, 106, 58, 0.12);
+  color: var(--color-primary-strong);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.omega-market-process-item strong {
+  display: block;
+  color: var(--color-primary-strong);
+}
+
+.omega-market-process-item p,
+.omega-market-process-note {
+  margin: var(--space-2) 0 0;
+  color: var(--color-muted);
+  line-height: 1.7;
+}
+
+.omega-market-proof-section {
+  background:
+    linear-gradient(180deg, rgba(247, 250, 246, 0.78), rgba(240, 246, 239, 0.88)),
+    transparent;
+}
+
+.omega-market-proof-copy,
+.omega-market-testimonial-column {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.omega-market-testimonial-head {
+  max-width: 32rem;
+}
+
+.omega-market-testimonial-grid {
+  gap: var(--space-4);
+}
+
+.omega-market-testimonial-grid .omega-testimonial {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: calc(var(--radius-lg) + 0.1rem);
+  box-shadow: 0 22px 42px -34px rgba(21, 53, 30, 0.34);
+}
+
+.omega-market-testimonial-grid .omega-testimonial p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.omega-market-testimonial-grid .omega-testimonial .omega-kicker {
+  margin-top: var(--space-4);
+}
+
+.omega-market-final-cta {
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+@media (min-width: 768px) {
+  .omega-market-hero-grid {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  }
+
+  .omega-market-mini-grid,
+  .omega-market-showcase-footer,
+  .omega-market-trust-grid,
+  .omega-market-feature-grid,
+  .omega-market-assurance-grid,
+  .omega-market-catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .omega-market-heading-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-5);
+    align-items: end;
+  }
+
+  .omega-market-split {
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  }
+
+  .omega-market-proof-layout {
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+  }
+
+  .omega-market-card-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+}
+
+@media (min-width: 1080px) {
+  .omega-market-showcase-footer,
+  .omega-market-feature-grid,
+  .omega-market-assurance-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .omega-market-trust-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .omega-market-showcase,
+  .omega-market-product-card,
+  .omega-market-process-card,
+  .omega-market-final-cta {
+    padding: var(--space-5);
+  }
+
+  .omega-market-mini-grid,
+  .omega-market-showcase-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .omega-market-proof-row span {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 @media (min-width: 768px) {
   .omega-nav { display: flex; }
   .omega-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
