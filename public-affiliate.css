@@ -1279,6 +1279,49 @@ body[data-page="home"] {
   padding: clamp(1.5rem, 4vw, 2.5rem);
 }
 
+body[data-page="home"] .omega-market-hero-copy h1 {
+  max-width: 18ch;
+}
+
+body[data-page="home"] .omega-market-hero-copy .omega-home-lead {
+  max-width: 56ch;
+  font-size: clamp(1rem, 2.4vw, 1.12rem);
+}
+
+body[data-page="home"] .omega-market-showcase-header h2,
+body[data-page="home"] .omega-market-heading h2 {
+  max-width: 24ch;
+}
+
+body[data-page="home"] .omega-market-catalog-grid {
+  gap: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+body[data-page="home"] .omega-market-product-card {
+  border-radius: calc(var(--radius-xl) + 0.3rem);
+}
+
+body[data-page="home"] .omega-market-product-content > .omega-section-lead {
+  font-size: 1rem;
+}
+
+body[data-page="home"] .omega-home-product-actions {
+  row-gap: 0.75rem;
+}
+
+@media (max-width: 767px) {
+  body[data-page="home"] .omega-market-hero-copy h1 {
+    max-width: 100%;
+  }
+
+  body[data-page="home"] .omega-home-actions .omega-btn,
+  body[data-page="home"] .omega-home-actions .omega-btn-secondary,
+  body[data-page="home"] .omega-home-product-actions .omega-btn,
+  body[data-page="home"] .omega-home-product-actions .omega-btn-secondary {
+    width: 100%;
+  }
+}
+
 @media (min-width: 768px) {
   .omega-market-hero-grid {
     grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
