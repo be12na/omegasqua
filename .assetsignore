@@ -1,6 +1,7 @@
 node_modules/
 tests/
-scripts/
+scripts/*
+!scripts/admin-forgot-password.js
 *.log
 tmp-*.png
 .tmp-http.log
