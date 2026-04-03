@@ -167,11 +167,11 @@
                 var _cachePrefix = 'cepat_api_cache_v3::';
                 var _actionMeta = {
                     get_public_cache_state: { ttl: 5 * 1000, storage: 'local' },
-                    get_global_settings: { ttl: 3600 * 1000, storage: 'local' },
-                    get_products: { ttl: 60 * 1000, storage: 'local' },
-                    get_product: { ttl: 60 * 1000, storage: 'local' },
-                    get_page_content: { ttl: 60 * 1000, storage: 'local' },
-                    get_pages: { ttl: 120 * 1000, storage: 'local' },
+                    get_global_settings: { ttl: 30 * 1000, storage: 'local' },
+                    get_products: { ttl: 20 * 1000, storage: 'local' },
+                    get_product: { ttl: 20 * 1000, storage: 'local' },
+                    get_page_content: { ttl: 20 * 1000, storage: 'local' },
+                    get_pages: { ttl: 20 * 1000, storage: 'local' },
                     get_admin_data: { ttl: 20 * 1000, storage: 'session' },
                     get_admin_orders: { ttl: 20 * 1000, storage: 'session' },
                     get_admin_users: { ttl: 20 * 1000, storage: 'session' },
@@ -254,6 +254,126 @@
                 var _isMutatingAction = function (action) {
                     if (!action) return false;
                     return !_isCacheableAction(action);
+                };
+                var _normalizeAction = function (action) {
+                    return String(action || '').trim().toLowerCase();
+                };
+                var _parseInitBodyObject = function (init) {
+                    try {
+                        if (!init || typeof init.body !== 'string') return null;
+                        var raw = init.body.trim();
+                        if (!raw) return null;
+                        var obj = JSON.parse(raw);
+                        if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return null;
+                        return obj;
+                    } catch (e) {
+                        return null;
+                    }
+                };
+                var _normalizeScopeVersion = function (value) {
+                    var n = Number(value || 0);
+                    return (isFinite(n) && n > 0) ? String(Math.floor(n)) : '';
+                };
+                var _extractCacheStateFromPayload = function (payload, action) {
+                    if (!payload || typeof payload !== 'object') return null;
+                    if (payload.cache_state && typeof payload.cache_state === 'object') return payload.cache_state;
+                    if (payload.data && typeof payload.data === 'object') {
+                        if (payload.data.cache_state && typeof payload.data.cache_state === 'object') return payload.data.cache_state;
+                        if (_normalizeAction(action) === 'get_public_cache_state') return payload.data;
+                    }
+                    return null;
+                };
+                var _syncPublicCacheStateFromPayload = function (payload, action) {
+                    try {
+                        if (!window.CEPAT_CACHE_STATE || typeof window.CEPAT_CACHE_STATE.sync !== 'function') return false;
+                        var state = _extractCacheStateFromPayload(payload, action);
+                        if (!state || typeof state !== 'object') return false;
+                        var current = (window.CEPAT_CACHE_STATE.getCached && window.CEPAT_CACHE_STATE.getCached()) || { data: {} };
+                        var currentData = current && current.data && typeof current.data === 'object' ? current.data : {};
+                        var merged = {
+                            settings: _normalizeScopeVersion(currentData.settings),
+                            catalog: _normalizeScopeVersion(currentData.catalog),
+                            pages: _normalizeScopeVersion(currentData.pages),
+                            dashboard: _normalizeScopeVersion(currentData.dashboard)
+                        };
+                        ['settings', 'catalog', 'pages', 'dashboard'].forEach(function (scope) {
+                            var incoming = Number(_normalizeScopeVersion(state[scope]) || 0);
+                            var existing = Number(_normalizeScopeVersion(merged[scope]) || 0);
+                            if (incoming > existing) merged[scope] = String(incoming);
+                        });
+                        window.CEPAT_CACHE_STATE.sync(merged, Date.now());
+                        return true;
+                    } catch (e) {
+                        return false;
+                    }
+                };
+                var _bumpPublicCacheStateScopes = function (scopes) {
+                    try {
+                        if (!window.CEPAT_CACHE_STATE || typeof window.CEPAT_CACHE_STATE.sync !== 'function') return;
+                        var list = Array.isArray(scopes) ? scopes : [];
+                        if (!list.length) return;
+                        var current = (window.CEPAT_CACHE_STATE.getCached && window.CEPAT_CACHE_STATE.getCached()) || { data: {} };
+                        var currentData = current && current.data && typeof current.data === 'object' ? current.data : {};
+                        var next = {
+                            settings: _normalizeScopeVersion(currentData.settings),
+                            catalog: _normalizeScopeVersion(currentData.catalog),
+                            pages: _normalizeScopeVersion(currentData.pages),
+                            dashboard: _normalizeScopeVersion(currentData.dashboard)
+                        };
+                        var now = Date.now();
+                        list.forEach(function (scope, idx) {
+                            var key = String(scope || '').trim().toLowerCase();
+                            if (!Object.prototype.hasOwnProperty.call(next, key)) return;
+                            var existing = Number(_normalizeScopeVersion(next[key]) || 0);
+                            var candidate = now + idx;
+                            next[key] = String(candidate > existing ? candidate : existing + 1);
+                        });
+                        window.CEPAT_CACHE_STATE.sync(next, Date.now());
+                    } catch (e) { }
+                };
+                var _inferMutationScopes = function (action, init) {
+                    var normalized = _normalizeAction(action);
+                    if (!normalized) return [];
+                    if (normalized === 'save_product' || normalized === 'delete_product') return ['catalog'];
+                    if (normalized === 'save_page' || normalized === 'delete_page') return ['pages'];
+                    if (normalized === 'update_order_status') return ['dashboard'];
+                    if (normalized === 'update_moota_gateway' || normalized === 'update_imagekit_media' || normalized === 'purge_cf_cache') return ['settings'];
+
+                    if (normalized === 'update_settings') {
+                        var bodyObj = _parseInitBodyObject(init) || {};
+                        var payload = (bodyObj.payload && typeof bodyObj.payload === 'object' && !Array.isArray(bodyObj.payload)) ? bodyObj.payload : {};
+                        var keys = Object.keys(payload).map(function (key) { return String(key || '').trim().toLowerCase(); });
+                        if (!keys.length) return ['settings'];
+                        var scopes = new Set();
+                        keys.forEach(function (key) {
+                            if (!key) return;
+                            if (
+                                key === 'site_name' || key === 'site_tagline' || key === 'site_logo' || key === 'site_favicon' ||
+                                key === 'contact_email' || key === 'wa_admin' || key === 'fonnte_token' ||
+                                key === 'cf_zone_id' || key === 'cf_api_token' || key === 'moota_gas_url' || key === 'moota_token' ||
+                                key === 'ik_public_key' || key === 'ik_private_key' || key === 'ik_endpoint'
+                            ) {
+                                scopes.add('settings');
+                            }
+                            if (key.indexOf('product') !== -1 || key === 'biz_package_tiers') scopes.add('catalog');
+                            if (
+                                key.indexOf('page') !== -1 || key.indexOf('faq') !== -1 || key.indexOf('testimonial') !== -1 ||
+                                key.indexOf('inquiry') !== -1 || key.indexOf('affiliate') !== -1 ||
+                                key === 'biz_testimonials' || key === 'biz_faqs' || key === 'biz_inquiries' || key === 'biz_affiliates'
+                            ) {
+                                scopes.add('pages');
+                            }
+                            if (key.indexOf('dashboard') !== -1 || key.indexOf('order') !== -1) scopes.add('dashboard');
+                        });
+                        if (!scopes.size) scopes.add('settings');
+                        return Array.from(scopes.values());
+                    }
+
+                    if (/^(save_|delete_|update_)/i.test(normalized)) {
+                        return ['settings', 'catalog', 'pages', 'dashboard'];
+                    }
+
+                    return [];
                 };
                 var _storageFor = function (kind) {
                     try {
@@ -436,10 +556,20 @@
                             _pendingReq.set(k, p);
                             return p.then(function (payload) { return _toResponse(payload); });
                         }
-                        return _fetchWithRetry(input, init).then(function (res) {
+                        return _fetchWithRetry(input, init).then(async function (res) {
                             if (method === 'POST' && _isMutatingAction(action) && res && res.ok) {
                                 _cacheClear();
                                 _markStat('cache_invalidations', action);
+
+                                var syncedFromPayload = false;
+                                try {
+                                    var mutationPayload = await res.clone().json();
+                                    syncedFromPayload = _syncPublicCacheStateFromPayload(mutationPayload, action);
+                                } catch (e) { }
+
+                                if (!syncedFromPayload) {
+                                    _bumpPublicCacheStateScopes(_inferMutationScopes(action, init));
+                                }
                             }
                             return res;
                         });
@@ -466,6 +596,7 @@
                         });
                         var payload = await res.json();
                         try {
+                            var batchMutationScopes = new Set();
                             if (payload && Array.isArray(payload.results)) {
                                 payload.results.forEach(function (entry, idx) {
                                     var req = items[idx];
@@ -482,7 +613,20 @@
                                     };
                                     _cacheSet(_cacheKey(endpoint, syntheticInit), ttl, syntheticPayload);
                                     _storageSet(action, endpoint, syntheticInit, ttl, syntheticPayload);
+
+                                    if (_isMutatingAction(action) && entry && entry.data && entry.data.status === 'success') {
+                                        var synced = _syncPublicCacheStateFromPayload(entry.data, action);
+                                        if (!synced) {
+                                            _inferMutationScopes(action, syntheticInit).forEach(function (scope) {
+                                                batchMutationScopes.add(scope);
+                                            });
+                                        }
+                                    }
                                 });
+
+                                if (batchMutationScopes.size) {
+                                    _bumpPublicCacheStateScopes(Array.from(batchMutationScopes));
+                                }
                             }
                         } catch (e) { }
                         return payload;

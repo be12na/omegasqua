@@ -30,6 +30,41 @@ const _apiCircuit = {
 };
 const _inFlightApi = new Map();
 
+const _cacheScopeFallback = {
+  settings: String(Date.now()),
+  catalog: String(Date.now()),
+  pages: String(Date.now()),
+  dashboard: String(Date.now())
+};
+
+const _cacheableActionScope = {
+  get_global_settings: 'settings',
+  get_products: 'catalog',
+  get_product: 'catalog',
+  get_page_content: 'pages',
+  get_pages: 'pages',
+  get_dashboard_data: 'dashboard'
+};
+
+const _nonMutatingActions = new Set([
+  'health',
+  'ping',
+  'admin_login',
+  'admin_logout',
+  'get_public_cache_state',
+  'get_global_settings',
+  'get_products',
+  'get_product',
+  'get_page_content',
+  'get_pages',
+  'get_admin_data',
+  'get_admin_orders',
+  'get_admin_users',
+  'get_dashboard_data',
+  'test_moota_connection',
+  'test_imagekit_connection'
+]);
+
 const _blockedPaths = new Set([
   '/appscript.js',
   '/load_test.js',
@@ -387,7 +422,8 @@ async function handleApi(request, env, ctx) {
     if (cacheMeta && cacheMeta.action) mapIncLimited(_topApiActions, cacheMeta.action, 80);
     const ttl = cacheMeta ? cacheTtls[cacheMeta.action] : 0;
     if (ttl > 0 && request.method === 'POST') {
-      const cacheKey = await buildApiCacheKey(request.url, cacheMeta.action, cacheMeta.key);
+      const effectiveCacheKeyPayload = withEffectiveCacheVersion(cacheMeta.action, cacheMeta.key);
+      const cacheKey = await buildApiCacheKey(request.url, cacheMeta.action, effectiveCacheKeyPayload);
       const cached = await caches.default.match(cacheKey);
       if (cached) {
         const cacheState = getCachedApiState(cached, ttl, env);
@@ -434,6 +470,7 @@ async function handleApi(request, env, ctx) {
             { maxAttempts: 4, timeoutMs: 25000 }
           );
           const res = await normalizeApiUpstreamResponse(upstream, request, env, requestId);
+          const finalized = await applyApiResponseSideEffects(parsedBody, res, request.url, ctx);
           if (res.status >= 500) {
             recordApiCircuitFailure('Upstream status ' + res.status, env);
             if (staleCandidate && staleCandidate.stale) {
@@ -444,11 +481,11 @@ async function handleApi(request, env, ctx) {
             recordApiCircuitSuccess();
           }
 
-          if (res.status < 500) {
-            const cacheable = buildCacheableApiResponse(res.clone(), ttl);
+          if (finalized.status < 500) {
+            const cacheable = buildCacheableApiResponse(finalized.clone(), ttl);
             if (ctx) ctx.waitUntil(caches.default.put(cacheKey, cacheable));
           }
-          return withMetricHeaders(res, { 'x-api-cache': 'MISS' });
+          return withMetricHeaders(finalized, { 'x-api-cache': 'MISS' });
         } catch (error) {
           recordApiCircuitFailure(error, env);
           if (staleCandidate && staleCandidate.stale) {
@@ -488,9 +525,10 @@ async function handleApi(request, env, ctx) {
     );
 
     const normalized = await normalizeApiUpstreamResponse(upstream, request, env, requestId);
-    if (normalized.status >= 500) recordApiCircuitFailure('Upstream status ' + normalized.status, env);
+    const finalized = await applyApiResponseSideEffects(parsedBody, normalized, request.url, ctx);
+    if (finalized.status >= 500) recordApiCircuitFailure('Upstream status ' + finalized.status, env);
     else recordApiCircuitSuccess();
-    return normalized;
+    return finalized;
   } catch (e) {
     recordApiCircuitFailure(e, env);
     return new Response(JSON.stringify({ status: 'error', message: 'Upstream request failed: ' + String(e) }), {
@@ -532,7 +570,10 @@ async function handleApiBatch(request, env, ctx, requestId, contentType, parsedB
     mapIncLimited(_topApiActions, 'batch:' + action, 80);
     const cacheMeta = getCacheMetaFromParsed(item);
     const ttl = cacheMeta ? Number(cacheTtls[cacheMeta.action] || 0) : 0;
-    const cacheKey = (ttl > 0) ? await buildApiCacheKey(request.url, cacheMeta.action, cacheMeta.key) : null;
+    const effectiveCacheKeyPayload = (ttl > 0 && cacheMeta)
+      ? withEffectiveCacheVersion(cacheMeta.action, cacheMeta.key)
+      : null;
+    const cacheKey = (ttl > 0 && cacheMeta) ? await buildApiCacheKey(request.url, cacheMeta.action, effectiveCacheKeyPayload) : null;
     const cached = cacheKey ? await caches.default.match(cacheKey) : null;
     if (cached && ttl > 0) {
       const cacheState = getCachedApiState(cached, ttl, env);
@@ -559,6 +600,7 @@ async function handleApiBatch(request, env, ctx, requestId, contentType, parsedB
       );
       const normalized = await normalizeApiUpstreamResponse(upstream, request, env, requestId + '_' + index);
       const data = await normalized.clone().json();
+      await applyBatchItemSideEffects(item, data, request.url, ctx);
       if (normalized.status >= 500) {
         recordApiCircuitFailure('Batch upstream status ' + normalized.status, env);
         if (staleCandidate && staleCandidate.stale) {
@@ -677,7 +719,7 @@ function parseJsonObject(text) {
 
 function getCacheMetaFromParsed(obj) {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return null;
-  const action = String(obj.action || '');
+  const action = String(obj.action || '').trim().toLowerCase();
   if (!action || action === 'batch') return null;
   const keyObj = Object.assign({}, obj);
   delete keyObj.rid;
@@ -686,9 +728,237 @@ function getCacheMetaFromParsed(obj) {
   return { action, key: keyObj };
 }
 
+function normalizeAction(action) {
+  return String(action || '').trim().toLowerCase();
+}
+
+function normalizeVersionToken(value) {
+  const n = Number(value || 0);
+  return Number.isFinite(n) && n > 0 ? String(Math.floor(n)) : '';
+}
+
+function getCacheScopeForAction(action) {
+  const normalized = normalizeAction(action);
+  return _cacheableActionScope[normalized] || '';
+}
+
+function getCurrentScopeVersion(scope) {
+  const key = String(scope || '').trim().toLowerCase();
+  return normalizeVersionToken(_cacheScopeFallback[key]);
+}
+
+function getWorkerCacheStateSnapshot() {
+  return {
+    settings: getCurrentScopeVersion('settings'),
+    catalog: getCurrentScopeVersion('catalog'),
+    pages: getCurrentScopeVersion('pages'),
+    dashboard: getCurrentScopeVersion('dashboard')
+  };
+}
+
+function syncWorkerCacheState(state) {
+  if (!state || typeof state !== 'object' || Array.isArray(state)) return;
+  ['settings', 'catalog', 'pages', 'dashboard'].forEach(function (scope) {
+    const incoming = normalizeVersionToken(state[scope]);
+    if (!incoming) return;
+    const current = Number(normalizeVersionToken(_cacheScopeFallback[scope]) || 0);
+    const next = Number(incoming || 0);
+    if (next > current) _cacheScopeFallback[scope] = String(next);
+  });
+}
+
+function bumpWorkerCacheScopes(scopes) {
+  const baseNow = Date.now();
+  (Array.isArray(scopes) ? scopes : []).forEach(function (scope, idx) {
+    const key = String(scope || '').trim().toLowerCase();
+    if (!Object.prototype.hasOwnProperty.call(_cacheScopeFallback, key)) return;
+    const current = Number(normalizeVersionToken(_cacheScopeFallback[key]) || 0);
+    const candidate = baseNow + idx;
+    _cacheScopeFallback[key] = String(candidate > current ? candidate : current + 1);
+  });
+}
+
+function withEffectiveCacheVersion(action, keyObj) {
+  const base = (keyObj && typeof keyObj === 'object' && !Array.isArray(keyObj)) ? Object.assign({}, keyObj) : {};
+  const fromRequest = Number(normalizeVersionToken(base.cache_version) || 0);
+  const scope = getCacheScopeForAction(action);
+  const fallbackVersion = Number(scope ? getCurrentScopeVersion(scope) : 0);
+  const effectiveVersion = Math.max(fromRequest, fallbackVersion);
+  if (effectiveVersion > 0) base.cache_version = String(effectiveVersion);
+  return base;
+}
+
+function isMutatingAction(action) {
+  const normalized = normalizeAction(action);
+  if (!normalized || normalized === 'batch') return false;
+  if (_nonMutatingActions.has(normalized)) return false;
+  if (/^(get_|list_|fetch_)/i.test(normalized)) return false;
+  return true;
+}
+
+function extractActionPayloadObject(parsedBody) {
+  if (!parsedBody || typeof parsedBody !== 'object' || Array.isArray(parsedBody)) return null;
+  const payload = parsedBody.payload;
+  if (payload && typeof payload === 'object' && !Array.isArray(payload)) return payload;
+  return null;
+}
+
+function inferMutationScopes(action, parsedBody) {
+  const normalized = normalizeAction(action);
+  if (!normalized) return [];
+
+  if (normalized === 'save_product' || normalized === 'delete_product') return ['catalog'];
+  if (normalized === 'save_page' || normalized === 'delete_page') return ['pages'];
+  if (normalized === 'update_order_status') return ['dashboard'];
+  if (normalized === 'update_moota_gateway' || normalized === 'update_imagekit_media' || normalized === 'purge_cf_cache') return ['settings'];
+
+  if (normalized === 'update_settings') {
+    const payload = extractActionPayloadObject(parsedBody) || {};
+    const keys = Object.keys(payload).map(function (key) { return String(key || '').trim().toLowerCase(); });
+    if (!keys.length) return ['settings'];
+
+    const scopes = new Set();
+    keys.forEach(function (key) {
+      if (!key) return;
+      if (
+        key === 'site_name' || key === 'site_tagline' || key === 'site_logo' || key === 'site_favicon' ||
+        key === 'contact_email' || key === 'wa_admin' || key === 'fonnte_token' ||
+        key === 'cf_zone_id' || key === 'cf_api_token' || key === 'moota_gas_url' || key === 'moota_token' ||
+        key === 'ik_public_key' || key === 'ik_private_key' || key === 'ik_endpoint'
+      ) {
+        scopes.add('settings');
+      }
+
+      if (key.indexOf('product') !== -1 || key === 'biz_package_tiers') scopes.add('catalog');
+
+      if (
+        key.indexOf('page') !== -1 || key.indexOf('faq') !== -1 || key.indexOf('testimonial') !== -1 ||
+        key.indexOf('inquiry') !== -1 || key.indexOf('affiliate') !== -1 ||
+        key === 'biz_testimonials' || key === 'biz_faqs' || key === 'biz_inquiries' || key === 'biz_affiliates'
+      ) {
+        scopes.add('pages');
+      }
+
+      if (key.indexOf('dashboard') !== -1 || key.indexOf('order') !== -1) scopes.add('dashboard');
+    });
+
+    if (!scopes.size) scopes.add('settings');
+    return Array.from(scopes.values());
+  }
+
+  if (/^(save_|delete_|update_)/i.test(normalized)) {
+    return ['settings', 'catalog', 'pages', 'dashboard'];
+  }
+
+  return [];
+}
+
+function extractCacheStateFromPayload(payload, action) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return null;
+  if (payload.cache_state && typeof payload.cache_state === 'object') return payload.cache_state;
+  if (payload.data && typeof payload.data === 'object') {
+    if (payload.data.cache_state && typeof payload.data.cache_state === 'object') return payload.data.cache_state;
+    if (normalizeAction(action) === 'get_public_cache_state') return payload.data;
+  }
+  return null;
+}
+
+async function parseResponseJsonSafe(response) {
+  if (!response) return null;
+  try {
+    const parsed = await response.clone().json();
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+    return parsed;
+  } catch (e) {
+    return null;
+  }
+}
+
+function isApiPayloadSuccessful(payload, statusCode) {
+  const status = Number(statusCode || 0);
+  if (status >= 500) return false;
+  if (!payload || typeof payload !== 'object') return status >= 200 && status < 400;
+  const marker = String(payload.status || '').trim().toLowerCase();
+  if (!marker) return status >= 200 && status < 400;
+  return marker === 'success' || marker === 'ok';
+}
+
+async function buildInvalidationCacheKeys(requestUrl, scopes) {
+  const uniqueScopes = Array.from(new Set((Array.isArray(scopes) ? scopes : []).map(function (scope) {
+    return String(scope || '').trim().toLowerCase();
+  }).filter(Boolean)));
+
+  const seedPayloads = [
+    { action: 'get_public_cache_state' }
+  ];
+
+  if (uniqueScopes.includes('settings')) {
+    seedPayloads.push({ action: 'get_global_settings' });
+  }
+  if (uniqueScopes.includes('catalog')) {
+    seedPayloads.push({ action: 'get_products', email: '' });
+    seedPayloads.push({ action: 'get_products' });
+  }
+  if (uniqueScopes.includes('pages')) {
+    seedPayloads.push({ action: 'get_pages', owner_id: '' });
+    seedPayloads.push({ action: 'get_pages' });
+  }
+  if (uniqueScopes.includes('dashboard')) {
+    seedPayloads.push({ action: 'get_dashboard_data' });
+  }
+
+  const keys = await Promise.all(seedPayloads.map(async function (payload) {
+    const enriched = withEffectiveCacheVersion(payload.action, payload);
+    return buildApiCacheKey(requestUrl, payload.action, enriched);
+  }));
+
+  return keys;
+}
+
+async function purgeApiCachesForScopes(requestUrl, scopes) {
+  const keys = await buildInvalidationCacheKeys(requestUrl, scopes);
+  await Promise.all(keys.map(async function (cacheKey) {
+    try { await caches.default.delete(cacheKey); } catch (e) { }
+  }));
+}
+
+async function applyApiResponseSideEffects(parsedBody, response, requestUrl, ctx) {
+  const action = normalizeAction(parsedBody && parsedBody.action);
+  const payload = await parseResponseJsonSafe(response);
+
+  const stateFromPayload = extractCacheStateFromPayload(payload, action);
+  if (stateFromPayload) syncWorkerCacheState(stateFromPayload);
+
+  if (!isMutatingAction(action)) return response;
+  if (!isApiPayloadSuccessful(payload, response && response.status)) return response;
+
+  const scopes = inferMutationScopes(action, parsedBody);
+  if (!scopes.length) return response;
+
+  bumpWorkerCacheScopes(scopes);
+  if (ctx) ctx.waitUntil(purgeApiCachesForScopes(requestUrl, scopes));
+  else await purgeApiCachesForScopes(requestUrl, scopes);
+
+  return response;
+}
+
+async function applyBatchItemSideEffects(item, payload, requestUrl, ctx) {
+  const action = normalizeAction(item && item.action);
+  const stateFromPayload = extractCacheStateFromPayload(payload, action);
+  if (stateFromPayload) syncWorkerCacheState(stateFromPayload);
+  if (!isMutatingAction(action)) return;
+  if (!isApiPayloadSuccessful(payload, 200)) return;
+
+  const scopes = inferMutationScopes(action, item);
+  if (!scopes.length) return;
+  bumpWorkerCacheScopes(scopes);
+  if (ctx) ctx.waitUntil(purgeApiCachesForScopes(requestUrl, scopes));
+  else await purgeApiCachesForScopes(requestUrl, scopes);
+}
+
 function getApiStaleWindowSeconds(ttlSeconds, env) {
   const multiplier = Math.max(2, Number(env && env.API_CACHE_STALE_MULTIPLIER || 10));
-  const minWindow = Math.max(60, Number(env && env.API_CACHE_STALE_MIN_SECONDS || 300));
+  const minWindow = Math.max(30, Number(env && env.API_CACHE_STALE_MIN_SECONDS || 30));
   return Math.max(minWindow, ttlSeconds * multiplier);
 }
 
@@ -815,7 +1085,7 @@ function isCacheableAssetPath(pathname) {
 function resolveAssetCacheControl(pathname) {
   const p = String(pathname || '').toLowerCase();
   if (!p || p === '/' || p.endsWith('.html')) {
-    return 'public, max-age=60, s-maxage=300, stale-while-revalidate=600';
+    return 'public, max-age=15, s-maxage=30, stale-while-revalidate=45';
   }
   if (p.endsWith('/site.config.js') || p === '/site.config.js') {
     return 'public, max-age=300, s-maxage=300, stale-while-revalidate=86400';
@@ -861,7 +1131,7 @@ async function tryGetCacheMeta(bodyText) {
   if (!t || t[0] !== '{') return null;
   try {
     const obj = JSON.parse(t);
-    const action = String(obj?.action || '');
+    const action = String(obj?.action || '').trim().toLowerCase();
     if (!action) return null;
     const keyObj = Object.assign({}, obj);
     delete keyObj.rid;
@@ -876,11 +1146,11 @@ async function tryGetCacheMeta(bodyText) {
 function getApiCacheTtls(env) {
   const defaults = {
     get_public_cache_state: 5,
-    get_global_settings: 300,
-    get_products: 60,
-    get_product: 60,
-    get_page_content: 60,
-    get_pages: 120
+    get_global_settings: 30,
+    get_products: 20,
+    get_product: 20,
+    get_page_content: 20,
+    get_pages: 20
   };
   try {
     const raw = env.API_CACHE_TTLS_JSON;
