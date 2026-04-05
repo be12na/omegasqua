@@ -1427,3 +1427,394 @@ body[data-page="home"] .omega-home-product-actions {
     width: min(100%, 300px);
   }
 }
+
+/* Homepage refresh: calmer spacing and more balanced media scale */
+body[data-page="home"] {
+  background:
+    radial-gradient(circle at top left, rgba(212, 160, 23, 0.1), transparent 24%),
+    radial-gradient(circle at top right, rgba(31, 106, 58, 0.12), transparent 30%),
+    linear-gradient(180deg, #f9fbf7 0%, #f4f7f3 42%, #eff4ee 100%);
+}
+
+body[data-page="home"] .omega-container {
+  width: min(1180px, calc(100% - clamp(1.25rem, 3vw, 3rem)));
+}
+
+body[data-page="home"] main section[id] {
+  scroll-margin-top: calc(4.5rem + var(--space-5));
+}
+
+body[data-page="home"] .omega-section {
+  padding: clamp(3.25rem, 8vw, 5rem) 0;
+}
+
+body[data-page="home"] .omega-market-hero {
+  padding-top: clamp(5.75rem, 10vw, 8rem);
+  padding-bottom: clamp(3rem, 7vw, 4.75rem);
+}
+
+body[data-page="home"] .omega-market-hero-grid {
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: stretch;
+}
+
+body[data-page="home"] .omega-market-hero-copy {
+  align-content: center;
+  gap: clamp(0.85rem, 1.6vw, 1.15rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid rgba(221, 230, 222, 0.9);
+  border-radius: 1.75rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.22));
+  box-shadow: 0 20px 46px -42px rgba(20, 52, 29, 0.55);
+  backdrop-filter: blur(8px);
+}
+
+body[data-page="home"] .omega-market-hero-copy h1 {
+  max-width: 11.5ch;
+  font-size: clamp(2.25rem, 4vw, 3.55rem);
+  line-height: 0.98;
+}
+
+body[data-page="home"] .omega-market-hero-copy .omega-home-lead {
+  max-width: 58ch;
+  font-size: clamp(1rem, 2vw, 1.08rem);
+  line-height: 1.75;
+}
+
+body[data-page="home"] .omega-home-actions {
+  gap: 0.75rem;
+  margin-top: var(--space-4);
+}
+
+body[data-page="home"] .omega-market-proof-row {
+  gap: 0.65rem;
+  margin-top: var(--space-3);
+}
+
+body[data-page="home"] .omega-market-proof-row span {
+  padding: 0.7rem 0.95rem;
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 0.79rem;
+}
+
+body[data-page="home"] .omega-home-quick-links {
+  gap: 0.6rem;
+  margin-top: var(--space-2);
+}
+
+body[data-page="home"] .omega-home-quick-links a {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+body[data-page="home"] .omega-market-showcase {
+  padding: clamp(1.35rem, 3vw, 2rem);
+  border-radius: 1.75rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(240, 246, 237, 0.96));
+  box-shadow: 0 26px 54px -40px rgba(22, 56, 31, 0.45);
+}
+
+body[data-page="home"] .omega-market-showcase::before {
+  width: 10rem;
+  height: 10rem;
+  opacity: 0.75;
+}
+
+body[data-page="home"] .omega-market-showcase-header h2 {
+  max-width: 14ch;
+  font-size: clamp(1.4rem, 3.2vw, 2rem);
+  line-height: 1.1;
+}
+
+body[data-page="home"] .omega-market-mini-grid {
+  gap: 0.95rem;
+  margin-top: var(--space-5);
+}
+
+body[data-page="home"] .omega-market-mini-card {
+  gap: 0.875rem;
+  padding: 0.95rem;
+  border-radius: 1.25rem;
+}
+
+body[data-page="home"] .omega-market-mini-media {
+  min-height: 8.75rem;
+  border-radius: 1.125rem;
+}
+
+body[data-page="home"] .omega-market-mini-media img {
+  max-width: 7.5rem;
+  padding: 0.9rem;
+}
+
+body[data-page="home"] .omega-market-mini-copy span {
+  font-size: 0.94rem;
+}
+
+body[data-page="home"] .omega-market-mini-price {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+body[data-page="home"] .omega-market-showcase-footer {
+  gap: 0.85rem;
+  margin-top: var(--space-4);
+}
+
+body[data-page="home"] .omega-market-showcase-metric {
+  padding: 0.95rem 1rem;
+  border-radius: 1.125rem;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+body[data-page="home"] .omega-market-trust-section {
+  padding-top: clamp(1rem, 3vw, 1.75rem);
+}
+
+body[data-page="home"] .omega-market-trust-grid {
+  gap: 1rem;
+}
+
+body[data-page="home"] .omega-market-trust-item {
+  padding: 1.15rem;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+body[data-page="home"] #produk-unggulan {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(247, 250, 245, 0.72));
+  border-top: 1px solid rgba(220, 230, 222, 0.72);
+  border-bottom: 1px solid rgba(220, 230, 222, 0.72);
+}
+
+body[data-page="home"] .omega-market-heading {
+  max-width: 42rem;
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}
+
+body[data-page="home"] .omega-market-heading-split {
+  align-items: center;
+}
+
+body[data-page="home"] .omega-market-heading h2 {
+  max-width: 20ch;
+  line-height: 1.08;
+}
+
+body[data-page="home"] .omega-market-catalog-grid {
+  gap: 1.25rem;
+}
+
+body[data-page="home"] .omega-market-product-card {
+  gap: 1.25rem;
+  padding: clamp(1.1rem, 2.5vw, 1.5rem);
+  border-radius: 1.6rem;
+  box-shadow: 0 26px 52px -42px rgba(18, 49, 26, 0.45);
+}
+
+body[data-page="home"] .omega-market-product-media {
+  gap: 0.85rem;
+}
+
+body[data-page="home"] .omega-market-product-badge {
+  padding: 0.52rem 0.85rem;
+  font-size: 0.76rem;
+}
+
+body[data-page="home"] .omega-market-product-frame {
+  width: min(100%, 15.25rem);
+  border-radius: 1.25rem;
+}
+
+body[data-page="home"] .omega-market-product-frame img {
+  padding: clamp(1rem, 2.2vw, 1.35rem);
+}
+
+body[data-page="home"] .omega-market-card-top {
+  gap: 0.85rem;
+}
+
+body[data-page="home"] .omega-market-card-top h3 {
+  font-size: clamp(1.35rem, 3.2vw, 1.8rem);
+}
+
+body[data-page="home"] .omega-market-price-badge {
+  padding: 0.85rem 1rem;
+  border-radius: 1.15rem;
+}
+
+body[data-page="home"] .omega-market-price-badge strong {
+  font-size: 1.35rem;
+}
+
+body[data-page="home"] .omega-market-meta-grid {
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.85rem;
+}
+
+body[data-page="home"] .omega-market-meta-grid article {
+  padding: 0.85rem 0.95rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+body[data-page="home"] .omega-market-benefits {
+  gap: 0.72rem;
+}
+
+body[data-page="home"] .omega-market-benefits li {
+  font-size: 0.95rem;
+  line-height: 1.62;
+}
+
+body[data-page="home"] .omega-home-product-actions {
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+body[data-page="home"] #alasan-memilih .omega-market-split,
+body[data-page="home"] #bukti-kepercayaan .omega-market-proof-layout {
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+body[data-page="home"] .omega-market-feature-card,
+body[data-page="home"] .omega-market-assurance-card,
+body[data-page="home"] .omega-market-process-card {
+  border-radius: 1.4rem;
+}
+
+body[data-page="home"] .omega-market-feature-card,
+body[data-page="home"] .omega-market-assurance-card {
+  padding: clamp(1.1rem, 2.4vw, 1.4rem);
+}
+
+body[data-page="home"] .omega-market-process-card {
+  padding: clamp(1.25rem, 2.8vw, 1.7rem);
+  box-shadow: 0 24px 52px -40px rgba(19, 51, 27, 0.42);
+}
+
+body[data-page="home"] .omega-market-process-list {
+  gap: 1rem;
+}
+
+body[data-page="home"] .omega-market-process-item {
+  gap: 0.85rem;
+}
+
+body[data-page="home"] .omega-market-process-item > span {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 0.83rem;
+}
+
+body[data-page="home"] #bukti-kepercayaan {
+  background: linear-gradient(180deg, rgba(244, 248, 242, 0.8), rgba(238, 244, 237, 0.96));
+}
+
+body[data-page="home"] .omega-market-testimonial-column {
+  align-self: start;
+  padding: clamp(1.15rem, 2.8vw, 1.65rem);
+  border: 1px solid rgba(219, 229, 220, 0.86);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: 0 20px 48px -42px rgba(19, 50, 28, 0.4);
+}
+
+body[data-page="home"] .omega-market-testimonial-grid {
+  gap: 1rem;
+}
+
+body[data-page="home"] .omega-market-testimonial-grid .omega-testimonial {
+  padding: 1rem 1.05rem;
+}
+
+body[data-page="home"] .omega-market-final-cta {
+  padding: clamp(1.5rem, 3vw, 2.35rem);
+  border-radius: 1.6rem;
+  box-shadow: 0 30px 60px -36px rgba(18, 54, 29, 0.52);
+}
+
+body[data-page="home"] .omega-compliance {
+  border-radius: 1.2rem;
+  padding: 1rem 1.1rem;
+  background: rgba(255, 250, 242, 0.9);
+}
+
+body[data-page="home"] .mobile-cta-bar {
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: var(--space-3);
+  padding: 0.35rem;
+  border-color: rgba(23, 79, 43, 0.42);
+  background: rgba(23, 79, 43, 0.94);
+}
+
+body[data-page="home"] .mobile-cta-bar a {
+  min-height: 3rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.01em;
+}
+
+@media (min-width: 1080px) {
+  body[data-page="home"] #alasan-memilih .omega-market-process-card {
+    position: sticky;
+    top: calc(4.5rem + var(--space-5));
+  }
+
+  body[data-page="home"] .omega-market-trust-item {
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+}
+
+@media (max-width: 767px) {
+  body[data-page="home"] .omega-market-hero-copy,
+  body[data-page="home"] .omega-market-showcase,
+  body[data-page="home"] .omega-market-product-card,
+  body[data-page="home"] .omega-market-process-card,
+  body[data-page="home"] .omega-market-testimonial-column,
+  body[data-page="home"] .omega-market-final-cta {
+    padding: 1.15rem;
+  }
+
+  body[data-page="home"] .omega-market-hero-copy h1,
+  body[data-page="home"] .omega-market-showcase-header h2,
+  body[data-page="home"] .omega-market-heading h2 {
+    max-width: 100%;
+  }
+
+  body[data-page="home"] .omega-market-hero-copy h1 {
+    font-size: clamp(2.05rem, 9vw, 3rem);
+  }
+
+  body[data-page="home"] .omega-home-quick-links {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+    scrollbar-width: none;
+  }
+
+  body[data-page="home"] .omega-home-quick-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  body[data-page="home"] .omega-market-proof-row span {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  body[data-page="home"] .omega-market-mini-media {
+    min-height: 7.5rem;
+  }
+
+  body[data-page="home"] .omega-market-mini-media img {
+    max-width: 6.5rem;
+  }
+
+  body[data-page="home"] .omega-market-product-frame {
+    width: min(100%, 14rem);
+  }
+
+  body[data-page="home"] .omega-market-price-badge {
+    width: 100%;
+  }
+}
