@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "updated_at": "2026-04-05T00:00:00Z",
+  "objective": "stabilize-openai-runtime-latency-with-strict-timeout-retry-and-concurrency-guardrails",
+  "timeouts": {
+    "connect_ms": 10000,
+    "first_token_ms": 45000,
+    "completion_ms": 180000,
+    "hard_request_ms": 240000,
+    "subagent_task_ms": 360000,
+    "notes": "Never allow 20-minute waiting loops. Split long tasks into checkpoints."
+  },
+  "retry": {
+    "max_attempts": 4,
+    "base_backoff_ms": 1000,
+    "max_backoff_ms": 30000,
+    "jitter": "full",
+    "retryable_status_codes": [
+      408,
+      409,
+      425,
+      429,
+      500,
+      502,
+      503,
+      504
+    ],
+    "retryable_error_signatures": [
+      "timeout",
+      "ETIMEDOUT",
+      "ECONNRESET",
+      "ENOTFOUND",
+      "socket hang up",
+      "rate_limit"
+    ],
+    "non_retryable_status_codes": [
+      400,
+      401,
+      403,
+      404,
+      422
+    ]
+  },
+  "circuit_breaker": {
+    "window_sec": 300,
+    "failure_rate_open_pct": 25,
+    "min_samples": 20,
+    "open_cooldown_sec": 60,
+    "half_open_probe_requests": 2,
+    "auto_close_success_streak": 3
+  },
+  "adaptive_parallelism": {
+    "green": {
+      "context_budget_max_pct": 50,
+      "max_active_subagents": 5,
+      "new_dispatch_interval_sec": 5
+    },
+    "yellow": {
+      "context_budget_max_pct": 60,
+      "max_active_subagents": 3,
+      "new_dispatch_interval_sec": 8
+    },
+    "red": {
+      "context_budget_max_pct": 70,
+      "max_active_subagents": 1,
+      "new_dispatch_interval_sec": 15
+    },
+    "emergency": {
+      "context_budget_max_pct": 100,
+      "max_active_subagents": 0,
+      "new_dispatch_interval_sec": 0,
+      "actions": [
+        "pause_new_dispatch",
+        "checkpoint_before_prune",
+        "force_context_grooming"
+      ]
+    }
+  },
+  "queue_control": {
+    "max_queue_depth": 12,
+    "max_queue_to_active_ratio": 2,
+    "on_overflow": [
+      "drop_low_priority_duplicates",
+      "tighten_scope",
+      "switch_to_summary_first_mode"
+    ]
+  },
+  "monitoring": {
+    "heartbeat_interval_sec": 30,
+    "max_heartbeat_gap_sec": 45,
+    "status_report_interval_sec": 30,
+    "kpis": [
+      "p95_latency_ms",
+      "failure_rate_pct_5m",
+      "timeout_count_5m",
+      "retry_success_rate_pct",
+      "context_budget_pct"
+    ]
+  },
+  "drift_correction": {
+    "trigger_rules": [
+      {
+        "when": "failure_rate_pct_5m > 25",
+        "then": "run_canary_wave"
+      },
+      {
+        "when": "context_budget_pct > 60 for 3 consecutive epochs",
+        "then": "hard_pause_non_critical"
+      },
+      {
+        "when": "quality_pass_rate_pct < 90",
+        "then": "rebaseline_prompts"
+      }
+    ],
+    "verify_window_sec": 180,
+    "rollback_if_no_improvement_pct": 10
+  }
+}

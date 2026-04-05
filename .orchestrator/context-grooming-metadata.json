@@ -40,7 +40,8 @@
     "main_session_total_tokens": 0,
     "cache_hit_rate_pct": 0,
     "risk_band": "unknown",
-    "note": "pending runtime-controller measurement cycle"
+    "note": "pending runtime-controller measurement cycle",
+    "policy_source": ".orchestrator/openai-request-policy.json"
   },
   "recovery_index": {
     "strategy_summary": "single-coordinator epoch dispatch with adaptive scaling and anti-thrashing",
@@ -59,7 +60,12 @@
     }
   },
   "workspace_cleanup": {
-    "removed": [],
+    "removed": [
+      {
+        "path": "token-usage-output.txt",
+        "reason": "stale local telemetry artifact; no longer needed for current milestone"
+      }
+    ],
     "kept_with_reason": [
       {
         "path": "node_modules/nwsapi/dist/lint.log",

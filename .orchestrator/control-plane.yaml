@@ -35,13 +35,28 @@ backpressure:
     - pause_low_priority_intake
     - tighten_task_scope
     - summary_first_mode
+runtime_profiles:
+  openai_request_policy_file: .orchestrator/openai-request-policy.json
+  adaptive_parallelism_by_risk_band:
+    green: 5
+    yellow: 3
+    red: 1
+    emergency: 0
 reporting:
   heartbeat_interval_sec: 30
   max_monitoring_gap_sec: 45
+  stale_after_sec: 60
+  critical_stale_after_sec: 90
   required_fields:
     - shard_id
+    - epoch_id
+    - heartbeat_ts_utc
+    - sequence_no
     - status
     - progress_pct
+    - queue_depth
+    - error_rate_pct_5m
+    - token_usage_pct
     - blockers
     - next_action
 drift_correction:
