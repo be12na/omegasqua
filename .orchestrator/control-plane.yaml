@@ -1,5 +1,5 @@
-version: 2
-updated_at: 2026-04-03T11:35:00+07:00
+version: 3
+updated_at: 2026-04-05T22:05:00+07:00
 strategy:
   model: single-coordinator-epoch-dispatch
   objective: maximize_safe_parallelism_under_context_budget
@@ -16,6 +16,12 @@ context_budget:
 parallelism:
   runtime_cap_hard: 5
   safe_cap_formula: floor((0.50W - coordinator_cost) / avg_agent_cost)
+  safe_cap_inputs:
+    coordinator_cost_source: .orchestrator/runtime/status.json:metrics.coordinator_cost_tokens
+    avg_agent_cost_source: .orchestrator/runtime/status.json:metrics.avg_agent_cost_tokens
+    window_size_source: .orchestrator/runtime/status.json:metrics.context_window_tokens
+    floor_min: 0
+    hard_cap_enforced: true
   scale_up:
     require_consecutive_green_cycles: 2
     quality_pass_rate_min_pct: 95
@@ -59,6 +65,16 @@ reporting:
     - token_usage_pct
     - blockers
     - next_action
+    - task_fingerprint
+    - plan_hash
+    - quality_pass_rate_pct
+  status_enum:
+    - idle
+    - running
+    - handoff_wait
+    - blocked
+    - error
+    - done
 drift_correction:
   triggers:
     - shared_failure_rate_gt_25pct
@@ -79,6 +95,7 @@ checkpointing:
     - open_risks
 load_balancing:
   policy: weighted-least-loaded
+  score_formula: (queue_depth + 1.2*in_flight + 0.5*error_rate_pct_5m) / agent_weight
   agent_weights:
     explore: 1.0
     librarian: 0.9
@@ -96,8 +113,24 @@ communication_pipeline:
     agent_to_control: .orchestrator/runtime/heartbeat.ndjson
     control_audit: .orchestrator/runtime/control-audit.ndjson
   deduplication:
-    fingerprint: sha1(task_scope + objective + milestone)
+    fingerprint: sha1(task_scope + objective + milestone + shard_id + path_scope_hash)
     skip_if_seen_within_hours: 24
+  locking:
+    mode: single-writer-per-path-per-epoch
+    lock_registry: .orchestrator/runtime/locks.json
+    conflict_resolution_order:
+      - current_owner
+      - shard_priority
+      - earliest_dispatch
+    shard_priority:
+      - runtime-config
+      - worker-core
+      - apps-script-backend
+      - admin-surface
+      - public-surface
+      - test-automation
+      - installer-orchestration
+      - docs-governance
 deviation_correction:
   auto_action_window_sec: 120
   correction_actions:
@@ -105,3 +138,11 @@ deviation_correction:
     - reroute_to_specialist
     - relaunch_single_shard
     - hard_pause_non_critical
+runtime_controller:
+  state_file: .orchestrator/runtime/status.json
+  dynamic_cap_from_system:
+    enabled: true
+    cpu_to_agent_ratio: 2
+    min_slots: 1
+  cycle_interval_sec: 30
+  report_file: .orchestrator/runtime/control-report.ndjson

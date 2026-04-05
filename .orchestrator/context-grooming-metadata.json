@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "updated_at": "2026-04-03T11:40:00+07:00",
+  "version": 3,
+  "updated_at": "2026-04-05T15:02:09.025Z",
   "current_milestone": "parallel-subagent-orchestration-and-context-budget-control",
   "budget_policy": {
     "target_live_context_pct": 50,
@@ -36,11 +36,16 @@
     }
   ],
   "latest_measurement": {
-    "local_total_tokens": 0,
-    "main_session_total_tokens": 0,
-    "cache_hit_rate_pct": 0,
-    "risk_band": "unknown",
-    "note": "pending runtime-controller measurement cycle",
+    "local_total_tokens": 21296,
+    "main_session_total_tokens": 168052,
+    "cache_hit_rate_pct": 87.1,
+    "grand_total_tokens": 1009295,
+    "context_budget_pct": 47.8,
+    "context_growth_rate_tokens_per_min": 0,
+    "time_to_budget_breach_min": null,
+    "grooming_compression_ratio": 0.201,
+    "risk_band": "green",
+    "note": "runtime groom cycle completed with archive checkpoint",
     "policy_source": ".orchestrator/openai-request-policy.json"
   },
   "recovery_index": {
@@ -52,9 +57,10 @@
       "shared-assumption fanout"
     ],
     "oracle_key_thresholds": {
-      "green_lt_pct": 55,
-      "yellow_55_70_pct": true,
-      "red_gt_pct": 70,
+      "green_lt_pct": 50,
+      "yellow_50_60_pct": true,
+      "red_gt_pct": 60,
+      "emergency_stop_pct": 70,
       "quality_pass_min_pct": 95,
       "conflict_rate_max_pct": 15
     }
@@ -72,6 +78,26 @@
         "reason": "dependency-owned artifact; left intact to avoid package-state side effects"
       }
     ],
-    "offloaded_with_recovery": []
+    "offloaded_with_recovery": [
+      {
+        "path": "token-usage-output.txt",
+        "archive": ".orchestrator/archive/token-usage-output.txt.2026-04-05T15-02-09-026Z.gz",
+        "reason": "token report archived after measurement ingest",
+        "sha256": "1aa71d19f10bac218996016fa7f3f379be9b1b7fa5047e8770513e48b7f86671"
+      },
+      {
+        "path": ".orchestrator/runtime/status.json",
+        "archive": ".orchestrator/archive/status.json.2026-04-05T15-02-09-043Z.gz",
+        "reason": "runtime status checkpoint compressed for recovery",
+        "sha256": "fcebad30d67548ab0c9b5c6b35e93c87113862fcd24cc772801341a8b4d24656"
+      }
+    ]
+  },
+  "offload_policy": {
+    "archive_dir": ".orchestrator/archive",
+    "index_file": ".orchestrator/archive/recovery-index.json",
+    "format": "gzip",
+    "max_uncompressed_artifact_kb": 128,
+    "preserve_metadata_days": 30
   }
 }

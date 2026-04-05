@@ -19,6 +19,9 @@
     "sync:installer:start": "node scripts/sync-installer.js --daemon",
     "sync:installer:stop": "node scripts/sync-installer.js --stop",
     "sync:installer:status": "node scripts/sync-installer.js --status",
+    "orchestrator:monitor": "node scripts/orchestrator-runtime.js",
+    "context:groom": "node scripts/context-grooming.js",
+    "orchestrator:cycle": "node scripts/orchestrator-runtime.js && node scripts/context-grooming.js",
     "deploy:staging": "npm run validate:deploy && npx wrangler deploy --env staging",
     "deploy:production": "npm run validate:deploy && npx wrangler deploy",
     "postinstall": "node scripts/sync-installer.js"

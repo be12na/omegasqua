@@ -1,0 +1,82 @@
+version: 1
+updated_at: 2026-04-05T22:15:00+07:00
+objective: periodic-progress-reporting-with-real-time-correction
+cadence:
+  default_heartbeat_interval_sec: 30
+  idle_heartbeat_interval_sec: 60
+  high_risk_heartbeat_interval_sec: 15
+  stale_after_sec: 45
+  critical_stale_after_sec: 90
+required_fields:
+  - report_id
+  - heartbeat_ts_utc
+  - shard_id
+  - owner_agent
+  - epoch_id
+  - status
+  - progress_pct
+  - blockers
+  - next_action
+  - task_fingerprint
+  - plan_hash
+  - eta_sec
+status_transitions:
+  planned:
+    - ready
+    - cancelled
+  ready:
+    - running
+    - blocked
+    - cancelled
+  running:
+    - handoff_wait
+    - blocked
+    - done
+    - error
+  handoff_wait:
+    - running
+    - blocked
+    - done
+  blocked:
+    - running
+    - cancelled
+  error:
+    - running
+    - cancelled
+  done: []
+  cancelled: []
+deviation_rules:
+  detect_if:
+    - heartbeat_gap_sec_gt_45
+    - progress_drop_gt_20pct_for_2_cycles
+    - plan_hash_mismatch_for_2_cycles
+    - done_without_verification
+  correction_sla_sec:
+    detect_to_instruction_max: 300
+    instruction_ack_max: 120
+    correction_start_max: 300
+correction_template:
+  instruction_header: KOREKSI-DEVIASI
+  required_fields:
+    - instruction_id
+    - target_agent
+    - deviation_type
+    - baseline_metric
+    - target_metric
+    - deadline_utc
+    - required_actions
+    - required_evidence
+    - rollback_plan
+    - escalation_if_missed
+blocker_escalation:
+  low:
+    escalate_after_sec: 1200
+  medium:
+    escalate_after_sec: 900
+  high:
+    escalate_after_sec: 600
+  critical:
+    escalate_after_sec: 180
+  auto_rules:
+    - blocked_without_ack_gt_180
+    - blocker_repeats_twice_in_1h_raise_one_level

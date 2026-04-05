@@ -9,6 +9,8 @@ node_modules/
 
 # Local analysis artifacts
 token-usage-output.txt
+.orchestrator/runtime/
+.orchestrator/archive/
 
 # Local reference clones (do not track as submodules)
 opentelemetry-collector/

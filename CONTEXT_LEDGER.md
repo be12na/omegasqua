@@ -42,3 +42,9 @@ Refactor existing website stack (static frontend + Cloudflare Worker + Apps Scri
 - Backend entity/API refactor task (implementation category).
 - Public conversion site refactor task (visual-engineering category).
 - Admin dashboard refactor task (visual-engineering category).
+
+## Orchestration Control Plane (2026-04-05)
+- Runtime supervisor script: `scripts/orchestrator-runtime.js` for risk-band monitoring, safe-cap computation, backpressure signals, and rebalance recommendation.
+- Context grooming script: `scripts/context-grooming.js` for checkpoint-before-prune, gzip offload, and recovery index updates.
+- Protocol anchor: `.orchestrator/progress-protocol.yaml` for heartbeat fields, status transitions, and measured deviation correction.
+- Active commands: `npm run orchestrator:monitor`, `npm run context:groom`, `npm run orchestrator:cycle`.
