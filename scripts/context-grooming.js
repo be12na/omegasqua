@@ -14,6 +14,7 @@ const INDEX_PATH = path.join(ARCHIVE_DIR, 'recovery-index.json');
 
 const TOKEN_REPORT_PATH = path.join(ROOT, 'token-usage-output.txt');
 const STATUS_PATH = path.join(ORCHESTRATOR_DIR, 'runtime', 'status.json');
+const CHECKPOINT_STATUS_MODE = process.argv.includes('--checkpoint-status');
 
 function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
@@ -94,7 +95,8 @@ function gzipFile(sourcePath, destPath) {
   const data = fs.readFileSync(sourcePath);
   const compressed = zlib.gzipSync(data, { level: zlib.constants.Z_BEST_SPEED });
   fs.writeFileSync(destPath, compressed);
-  return { before: data.length, after: compressed.length };
+  const sourceHash = crypto.createHash('sha256').update(data).digest('hex');
+  return { before: data.length, after: compressed.length, sourceHash };
 }
 
 function sha256File(filePath) {
@@ -142,9 +144,20 @@ function run() {
 
   const offloaded = [];
   const candidates = [
-    { filePath: TOKEN_REPORT_PATH, removeSource: true, reason: 'token report archived after measurement ingest' },
-    { filePath: STATUS_PATH, removeSource: false, reason: 'runtime status checkpoint compressed for recovery' }
+    {
+      filePath: TOKEN_REPORT_PATH,
+      removeSource: true,
+      reason: 'token report archived after measurement ingest'
+    }
   ];
+
+  if (CHECKPOINT_STATUS_MODE || riskBand !== 'green') {
+    candidates.push({
+      filePath: STATUS_PATH,
+      removeSource: false,
+      reason: 'runtime status checkpoint compressed for recovery'
+    });
+  }
 
   for (const item of candidates) {
     if (!fs.existsSync(item.filePath)) continue;
@@ -153,16 +166,27 @@ function run() {
     const archiveName = `${base}.${nowStamp()}.gz`;
     const archivePath = path.join(ARCHIVE_DIR, archiveName);
     const compression = gzipFile(item.filePath, archivePath);
+
+    const sourcePath = path.relative(ROOT, item.filePath).replace(/\\/g, '/');
+    const hasDuplicate = index.artifacts.some(
+      (artifact) => artifact.source_path === sourcePath && artifact.source_sha256 === compression.sourceHash
+    );
+    if (hasDuplicate) {
+      fs.unlinkSync(archivePath);
+      continue;
+    }
+
     const hash = sha256File(archivePath);
     const artifact = {
       artifact_id: `ctx-${nowStamp()}-${offloaded.length + 1}`,
       created_at: new Date().toISOString(),
-      source_path: path.relative(ROOT, item.filePath).replace(/\\/g, '/'),
+      source_path: sourcePath,
       archive_path: path.relative(ROOT, archivePath).replace(/\\/g, '/'),
       reason: item.reason,
       compression: 'gzip',
       size_before_bytes: compression.before,
       size_after_bytes: compression.after,
+      source_sha256: compression.sourceHash,
       sha256: hash,
       restore_steps: [
         'verify sha256 checksum',
@@ -205,6 +229,7 @@ function run() {
         ok: true,
         risk_band: metadata.latest_measurement.risk_band,
         context_budget_pct: metadata.latest_measurement.context_budget_pct,
+        checkpoint_status_enabled: CHECKPOINT_STATUS_MODE || riskBand !== 'green',
         offloaded_count: offloaded.length,
         compression_ratio: ratio
       },

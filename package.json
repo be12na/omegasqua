@@ -21,7 +21,11 @@
     "sync:installer:status": "node scripts/sync-installer.js --status",
     "orchestrator:monitor": "node scripts/orchestrator-runtime.js",
     "context:groom": "node scripts/context-grooming.js",
+    "context:groom:checkpoint": "node scripts/context-grooming.js --checkpoint-status",
     "orchestrator:cycle": "node scripts/orchestrator-runtime.js && node scripts/context-grooming.js",
+    "orchestrator:start": "node scripts/orchestrator-controller.js --start",
+    "orchestrator:stop": "node scripts/orchestrator-controller.js --stop",
+    "orchestrator:status": "node scripts/orchestrator-controller.js --status",
     "deploy:staging": "npm run validate:deploy && npx wrangler deploy --env staging",
     "deploy:production": "npm run validate:deploy && npx wrangler deploy",
     "postinstall": "node scripts/sync-installer.js"

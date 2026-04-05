@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated_at": "2026-04-05T15:02:09.025Z",
+  "updated_at": "2026-04-05T15:21:10.365Z",
   "current_milestone": "parallel-subagent-orchestration-and-context-budget-control",
   "budget_policy": {
     "target_live_context_pct": 50,
@@ -43,7 +43,7 @@
     "context_budget_pct": 47.8,
     "context_growth_rate_tokens_per_min": 0,
     "time_to_budget_breach_min": null,
-    "grooming_compression_ratio": 0.201,
+    "grooming_compression_ratio": 0,
     "risk_band": "green",
     "note": "runtime groom cycle completed with archive checkpoint",
     "policy_source": ".orchestrator/openai-request-policy.json"
@@ -87,9 +87,9 @@
       },
       {
         "path": ".orchestrator/runtime/status.json",
-        "archive": ".orchestrator/archive/status.json.2026-04-05T15-02-09-043Z.gz",
+        "archive": ".orchestrator/archive/status.json.2026-04-05T15-19-50-488Z.gz",
         "reason": "runtime status checkpoint compressed for recovery",
-        "sha256": "fcebad30d67548ab0c9b5c6b35e93c87113862fcd24cc772801341a8b4d24656"
+        "sha256": "0459d1b2cb85bf0a982d6b63dc1e952f6a76b0e640a852b197693c209502191c"
       }
     ]
   },

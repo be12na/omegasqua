@@ -46,5 +46,7 @@ Refactor existing website stack (static frontend + Cloudflare Worker + Apps Scri
 ## Orchestration Control Plane (2026-04-05)
 - Runtime supervisor script: `scripts/orchestrator-runtime.js` for risk-band monitoring, safe-cap computation, backpressure signals, and rebalance recommendation.
 - Context grooming script: `scripts/context-grooming.js` for checkpoint-before-prune, gzip offload, and recovery index updates.
+- Daemon controller: `scripts/orchestrator-controller.js` untuk loop monitor+groom otomatis, PID control (`start/stop/status`), dan heartbeat siklus.
 - Protocol anchor: `.orchestrator/progress-protocol.yaml` for heartbeat fields, status transitions, and measured deviation correction.
-- Active commands: `npm run orchestrator:monitor`, `npm run context:groom`, `npm run orchestrator:cycle`.
+- Active commands: `npm run orchestrator:start`, `npm run orchestrator:status`, `npm run orchestrator:stop`, `npm run orchestrator:cycle`.
+- Catatan grooming: checkpoint status runtime hanya saat mode non-green atau dipaksa via `npm run context:groom:checkpoint` untuk mencegah duplikasi arsip.

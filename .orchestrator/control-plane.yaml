@@ -140,6 +140,9 @@ deviation_correction:
     - hard_pause_non_critical
 runtime_controller:
   state_file: .orchestrator/runtime/status.json
+  pid_file: .orchestrator/runtime/controller.pid
+  log_file: .orchestrator/runtime/controller.log
+  heartbeat_file: .orchestrator/runtime/controller-heartbeat.ndjson
   dynamic_cap_from_system:
     enabled: true
     cpu_to_agent_ratio: 2
