@@ -1085,7 +1085,7 @@ function isCacheableAssetPath(pathname) {
 function resolveAssetCacheControl(pathname) {
   const p = String(pathname || '').toLowerCase();
   if (!p || p === '/' || p.endsWith('.html')) {
-    return 'public, max-age=15, s-maxage=30, stale-while-revalidate=45';
+    return 'no-store, no-cache, must-revalidate';
   }
   if (p.endsWith('/site.config.js') || p === '/site.config.js') {
     return 'public, max-age=300, s-maxage=300, stale-while-revalidate=86400';

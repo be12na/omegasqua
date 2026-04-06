@@ -42,6 +42,32 @@ function extractCatalogVersion(payload) {
 }
 
 describe('Worker cache invalidation', () => {
+  test('root and html routes are served with no-store cache policy', async () => {
+    if (!global.crypto || !global.crypto.subtle) {
+      global.crypto = require('crypto').webcrypto;
+    }
+
+    global.caches = { default: createMemoryCache() };
+    global.fetch = jest.fn(async () => new Response('fallback', { status: 200 }));
+
+    const worker = loadWorker();
+    const ctx = { waitUntil: (promise) => promise };
+    const env = {
+      ASSETS: {
+        fetch: jest.fn(async (request) => new Response('<html>ok</html>', {
+          status: 200,
+          headers: { 'content-type': 'text/html; charset=utf-8' }
+        }))
+      }
+    };
+
+    const rootRes = await worker.fetch(new Request('https://omegasqua.test/', { method: 'GET' }), env, ctx);
+    expect(rootRes.headers.get('cache-control')).toBe('no-store, no-cache, must-revalidate');
+
+    const htmlRes = await worker.fetch(new Request('https://omegasqua.test/about.html', { method: 'GET' }), env, ctx);
+    expect(htmlRes.headers.get('cache-control')).toBe('no-store, no-cache, must-revalidate');
+  });
+
   test('mutation bumps cache version and bypasses stale read cache key', async () => {
     if (!global.crypto || !global.crypto.subtle) {
       global.crypto = require('crypto').webcrypto;
