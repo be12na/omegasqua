@@ -1,4 +1,4 @@
-const ss = SpreadsheetApp.getActiveSpreadsheet();
+const ss = SpreadsheetApp.openById("1DVLMPXyHN2jYKfm5JaZqfKmZrRlMannSpFzxocMFUP4");
 
 /* =========================
    CONFIG.JS INTEGRATION

@@ -16,16 +16,16 @@
   ],
   "vars": {
     "ALLOWED_ORIGINS": "https://omegasqua.my.id,https://www.omegasqua.my.id",
-    "APP_GAS_URL": "https://script.google.com/macros/s/AKfycbxvpwcjg4pwXiXFVrCZ2W_qtSaahMkbbowPqvNGPJKkhO4zpLFsP2MF8lkpMoZ37LHy/exec",
-    "MOOTA_GAS_URL": "https://script.google.com/macros/s/AKfycbxvpwcjg4pwXiXFVrCZ2W_qtSaahMkbbowPqvNGPJKkhO4zpLFsP2MF8lkpMoZ37LHy/exec"
+    "APP_GAS_URL": "https://script.google.com/macros/s/AKfycby177xpnmdGhd6PoWzUujqk19G2FN2g04yKwXzNSXF9pg1iNLus6ZswEEJ0sAm0TbG4zQ/exec",
+    "MOOTA_GAS_URL": "https://script.google.com/macros/s/AKfycby177xpnmdGhd6PoWzUujqk19G2FN2g04yKwXzNSXF9pg1iNLus6ZswEEJ0sAm0TbG4zQ/exec"
   },
   "env": {
     "staging": {
       "name": "omegasqua-web-staging",
       "vars": {
         "ALLOWED_ORIGINS": "https://staging.omegasqua.my.id",
-        "APP_GAS_URL": "https://script.google.com/macros/s/AKfycbxvpwcjg4pwXiXFVrCZ2W_qtSaahMkbbowPqvNGPJKkhO4zpLFsP2MF8lkpMoZ37LHy/exec",
-        "MOOTA_GAS_URL": "https://script.google.com/macros/s/AKfycbxvpwcjg4pwXiXFVrCZ2W_qtSaahMkbbowPqvNGPJKkhO4zpLFsP2MF8lkpMoZ37LHy/exec"
+        "APP_GAS_URL": "https://script.google.com/macros/s/AKfycby177xpnmdGhd6PoWzUujqk19G2FN2g04yKwXzNSXF9pg1iNLus6ZswEEJ0sAm0TbG4zQ/exec",
+        "MOOTA_GAS_URL": "https://script.google.com/macros/s/AKfycby177xpnmdGhd6PoWzUujqk19G2FN2g04yKwXzNSXF9pg1iNLus6ZswEEJ0sAm0TbG4zQ/exec"
       }
     }
   }

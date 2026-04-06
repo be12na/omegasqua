@@ -18,7 +18,7 @@
         v: 2,
         // Encoded + split GAS URL (XOR obfuscated, not plain text)
         _k: [104, 116, 116, 112, 115, 58, 47, 47, 115, 99, 114, 105, 112, 116, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 47, 109, 97, 99, 114, 111, 115, 47, 115, 47],
-        _d: 'QUtmeWNid3FkTW95azZQaUR3M2VscGYwbHprNUJxVkVucGlJLXkwS2pWYVZrVl9uQ1IxQWY3U1hxdnZYOER0bVRocWY4bzgtL2V4ZWM=',
+        _d: 'QUtmeWNieTE3N3hwbm1kR2hkNlBvV3pVdWpxazE5RzJGTjJnMDR5S3dYek5TWEY5cGcxaU5MdXM2WnN3RUVKMHNBbTBUYkc0elEvZXhlYw==',
         _h: '6a1f2c3d'  // integrity hash fragment
     };
 
