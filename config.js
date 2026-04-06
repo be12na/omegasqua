@@ -164,7 +164,8 @@
                 var _sleep = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
                 var _cacheMem = new Map();
                 var _pendingReq = new Map();
-                var _cachePrefix = 'cepat_api_cache_v3::';
+                var _cachePrefix = 'cepat_api_cache_v4::';
+                var _cacheLegacyPrefixes = ['cepat_api_cache_v1::', 'cepat_api_cache_v2::', 'cepat_api_cache_v3::'];
                 var _actionMeta = {
                     get_public_cache_state: { ttl: 5 * 1000, storage: 'local' },
                     get_global_settings: { ttl: 30 * 1000, storage: 'local' },
@@ -438,6 +439,22 @@
                         });
                     } catch (e) { }
                 };
+                var _purgeLegacyClientCaches = function () {
+                    try {
+                        var stores = [_storageFor('local'), _storageFor('session')];
+                        stores.forEach(function (store) {
+                            if (!store) return;
+                            for (var i = store.length - 1; i >= 0; i--) {
+                                var key = String(store.key(i) || '');
+                                if (!key) continue;
+                                var prefixed = _cacheLegacyPrefixes.some(function (prefix) { return key.indexOf(prefix) === 0; });
+                                if (prefixed || key === 'cepat_public_catalog' || key.indexOf('cepat_product_') === 0) {
+                                    store.removeItem(key);
+                                }
+                            }
+                        });
+                    } catch (e) { }
+                };
                 var _storageGet = function (action, url, init) {
                     try {
                         var meta = _actionMeta[action];
@@ -633,7 +650,7 @@
                     };
                 } catch (e) { }
                 try {
-                    var _publicCacheStateKey = 'cepat_public_cache_state_v1';
+                    var _publicCacheStateKey = 'cepat_public_cache_state_v2';
                     var _publicCacheStateMaxAge = 5 * 1000;
                     var _publicCacheScopes = ['settings', 'catalog', 'pages', 'dashboard'];
                     var _normalizePublicCacheState = function (state) {
@@ -719,6 +736,7 @@
                     };
                     window.CEPAT_CACHE_STATE.getCached();
                 } catch (e) { }
+                _purgeLegacyClientCaches();
             }
         } catch (e) { }
     } else {
