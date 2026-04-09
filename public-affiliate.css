@@ -2006,13 +2006,6 @@ body[data-page="home"] {
   background: #edf5f4;
 }
 
-body[data-page="home"] .omega-nav,
-body[data-page="home"] .omega-market-hero,
-body[data-page="home"] .omega-market-trust-section,
-body[data-page="home"] .mobile-cta-bar {
-  display: none;
-}
-
 body[data-page="home"] .omega-header {
   position: sticky;
   top: 0;
@@ -2216,6 +2209,12 @@ body[data-page="home"] .omega-home-herbal-action-primary {
 }
 
 @media (max-width: 767px) {
+  body[data-page="home"] .omega-market-hero,
+  body[data-page="home"] .omega-market-trust-section,
+  body[data-page="home"] .mobile-cta-bar {
+    display: none;
+  }
+
   body[data-page="home"] .omega-container {
     width: calc(100% - 0.8rem);
   }
