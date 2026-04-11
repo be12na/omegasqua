@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated_at": "2026-04-11T13:43:36.124Z",
+  "updated_at": "2026-04-11T13:44:35.841Z",
   "current_milestone": "parallel-subagent-orchestration-and-context-budget-control",
   "budget_policy": {
     "target_live_context_pct": 50,
