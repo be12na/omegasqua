@@ -81,7 +81,9 @@ function runCycle() {
     risk_band: status ? status.risk_band : 'unknown',
     context_budget_pct: status && status.metrics ? status.metrics.context_budget_pct : null,
     max_active_subagents: status && status.slots ? status.slots.max_active_subagents : null,
-    dispatch_slots_available: status && status.slots ? status.slots.dispatch_slots_available : null
+    dispatch_slots_available: status && status.slots ? status.slots.dispatch_slots_available : null,
+    path_scope_conflicts: status && status.metrics ? status.metrics.path_scope_conflicts : null,
+    correction_required: status && status.recommended_actions ? status.recommended_actions.correction_required : null
   };
 
   appendHeartbeat(payload);
@@ -148,7 +150,9 @@ function statusDaemon() {
         pid: running ? pid : null,
         risk_band: status ? status.risk_band : null,
         context_budget_pct: status && status.metrics ? status.metrics.context_budget_pct : null,
-        dispatch_slots_available: status && status.slots ? status.slots.dispatch_slots_available : null
+        dispatch_slots_available: status && status.slots ? status.slots.dispatch_slots_available : null,
+        path_scope_conflicts: status && status.metrics ? status.metrics.path_scope_conflicts : null,
+        correction_required: status && status.recommended_actions ? status.recommended_actions.correction_required : null
       },
       null,
       2

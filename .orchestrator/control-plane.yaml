@@ -1,5 +1,5 @@
 version: 3
-updated_at: 2026-04-05T22:05:00+07:00
+updated_at: 2026-04-11T20:45:00+07:00
 strategy:
   model: single-coordinator-epoch-dispatch
   objective: maximize_safe_parallelism_under_context_budget
@@ -123,6 +123,7 @@ communication_pipeline:
       - shard_priority
       - earliest_dispatch
     shard_priority:
+      - bootstrap-config-sync
       - runtime-config
       - worker-core
       - apps-script-backend

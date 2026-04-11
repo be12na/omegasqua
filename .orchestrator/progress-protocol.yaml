@@ -1,5 +1,5 @@
 version: 1
-updated_at: 2026-04-05T22:15:00+07:00
+updated_at: 2026-04-11T20:45:00+07:00
 objective: periodic-progress-reporting-with-real-time-correction
 cadence:
   default_heartbeat_interval_sec: 30
@@ -20,6 +20,8 @@ required_fields:
   - task_fingerprint
   - plan_hash
   - eta_sec
+  - correction_required
+  - path_scope_conflicts
 status_transitions:
   planned:
     - ready

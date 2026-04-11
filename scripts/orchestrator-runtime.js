@@ -133,6 +133,41 @@ function toEpochId(nowIso) {
   return nowIso.slice(0, 16) + 'Z';
 }
 
+function normalizePathScope(rawPath) {
+  return String(rawPath || '').replace(/\\/g, '/').replace(/\/+/g, '/').trim();
+}
+
+function collectOwnershipConflicts(shards) {
+  const ownerByPath = new Map();
+
+  for (const shard of shards || []) {
+    const shardId = String((shard || {}).id || 'unknown-shard');
+    const pathScopes = [
+      ...(((shard || {}).exclusive_paths) || []),
+      ...(((shard || {}).paths) || [])
+    ];
+
+    for (const scope of pathScopes) {
+      const normalized = normalizePathScope(scope);
+      if (!normalized) continue;
+
+      if (!ownerByPath.has(normalized)) {
+        ownerByPath.set(normalized, new Set());
+      }
+      ownerByPath.get(normalized).add(shardId);
+    }
+  }
+
+  return Array.from(ownerByPath.entries())
+    .filter(([, owners]) => owners.size > 1)
+    .map(([pathScope, owners]) => ({
+      path_scope: pathScope,
+      owners: Array.from(owners).sort(),
+      owner_count: owners.size
+    }))
+    .sort((a, b) => b.owner_count - a.owner_count || a.path_scope.localeCompare(b.path_scope));
+}
+
 function run() {
   ensureDir(RUNTIME_DIR);
 
@@ -232,6 +267,8 @@ function run() {
     .filter((count) => count > 1)
     .reduce((acc, count) => acc + (count - 1), 0);
 
+  const ownershipConflicts = collectOwnershipConflicts(shardMap.shards || []);
+
   const byAgent = {};
   const agentWeights = ((control.load_balancing || {}).agent_weights) || {};
 
@@ -291,6 +328,7 @@ function run() {
       stale_heartbeats: stale.length,
       critical_stale_heartbeats: critical.length,
       duplicate_queue_items: duplicateQueueItems,
+      path_scope_conflicts: ownershipConflicts.length,
       lock_count: Object.keys(locks).length,
       quality_pass_rate_pct: qualityPass
     },
@@ -298,9 +336,11 @@ function run() {
       rebalance_to: recommendedAgent,
       apply_backpressure: isBackpressured,
       pause_new_dispatch: riskBand === 'emergency' || qualityCap === 0,
-      correction_required: critical.length > 0 || avgError > 25
+      correction_required: critical.length > 0 || avgError > 25 || ownershipConflicts.length > 0,
+      rescope_required: ownershipConflicts.length > 0
     },
     agents: agentScores,
+    ownership_conflicts: ownershipConflicts,
     plan_hash: planHash
   };
 
@@ -314,6 +354,7 @@ function run() {
     max_active_subagents: maxActiveSubagents,
     queue_depth: queueDepth,
     dispatch_slots_available: status.slots.dispatch_slots_available,
+    path_scope_conflicts: ownershipConflicts.length,
     stale_heartbeats: stale,
     critical_stale_heartbeats: critical
   };
@@ -328,7 +369,8 @@ function run() {
     dispatch_slots_available: status.slots.dispatch_slots_available,
     context_budget_pct: status.metrics.context_budget_pct,
     queue_depth: status.metrics.queue_depth,
-    rebalance_to: status.recommended_actions.rebalance_to
+    rebalance_to: status.recommended_actions.rebalance_to,
+    path_scope_conflicts: status.metrics.path_scope_conflicts
   };
 
   process.stdout.write(JSON.stringify(output, null, 2) + '\n');

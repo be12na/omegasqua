@@ -12,16 +12,15 @@
       "write_lock_policy": "single-writer-per-path-per-epoch",
       "paths": [
         "_worker.js",
-        "worker-budget-audit.js",
-        "wrangler.jsonc"
+        "worker-budget-audit.js"
       ],
       "exclusive_paths": [
         "_worker.js",
-        "worker-budget-audit.js",
-        "wrangler.jsonc"
+        "worker-budget-audit.js"
       ],
       "depends_on": [
-        "runtime-config"
+        "runtime-config",
+        "bootstrap-config-sync"
       ],
       "handoff_to": [
         "runtime-config",
@@ -35,15 +34,11 @@
       "write_lock_policy": "single-writer-per-path-per-epoch",
       "paths": [
         "manifest.json",
-        "scripts/sync-installer.js",
-        "setup.js",
-        "validate-config.js"
+        "scripts/sync-installer.js"
       ],
       "exclusive_paths": [
         "manifest.json",
-        "scripts/sync-installer.js",
-        "setup.js",
-        "validate-config.js"
+        "scripts/sync-installer.js"
       ],
       "depends_on": [
         "worker-core"
@@ -108,12 +103,10 @@
       "write_lock_policy": "single-writer-per-path-per-epoch",
       "paths": [
         "config.js",
-        "site.config.js",
         "validate-seo.js"
       ],
       "exclusive_paths": [
         "config.js",
-        "site.config.js",
         "validate-seo.js"
       ],
       "depends_on": [],
@@ -121,6 +114,31 @@
         "worker-core",
         "public-surface",
         "admin-surface"
+      ],
+      "handoff_sla_sec": 90
+    },
+    {
+      "id": "bootstrap-config-sync",
+      "owner_agent": "metis",
+      "write_lock_policy": "single-writer-per-path-per-epoch",
+      "paths": [
+        "setup.js",
+        "validate-config.js",
+        "site.config.js",
+        "wrangler.jsonc"
+      ],
+      "exclusive_paths": [
+        "setup.js",
+        "validate-config.js",
+        "site.config.js",
+        "wrangler.jsonc"
+      ],
+      "depends_on": [
+        "runtime-config"
+      ],
+      "handoff_to": [
+        "worker-core",
+        "installer-orchestration"
       ],
       "handoff_sla_sec": 90
     },
