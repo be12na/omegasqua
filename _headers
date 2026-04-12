@@ -11,6 +11,7 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Content-Security-Policy: default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; frame-ancestors 'self'; object-src 'none'; base-uri 'self'
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+*/
 
 # --- FORCE CORRECT MIME TYPE FOR JS FILES ---
 /tailwind.css
